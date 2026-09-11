@@ -1482,12 +1482,435 @@
   }
 }
 
+    /* ================= DISEÑO PREMIUM / BOTONES ================= */
+    <style>
+      :root {
+        --cc-blue: #087fc1;
+        --cc-blue-dark: #075f91;
+        --cc-purple: #4f46e5;
+        --cc-purple-dark: #4338ca;
+        --cc-amber: #f59e0b;
+        --cc-orange: #f97316;
+        --cc-green: #059669;
+      }
+
+      body {
+        background: #18202f !important;
+      }
+
+      #app-container > header {
+        background: linear-gradient(135deg, #086fa8 0%, #087fbd 55%, #05679e 100%) !important;
+        border-bottom: 1px solid rgba(255,255,255,.12);
+        box-shadow: 0 8px 24px rgba(0,0,0,.16) !important;
+      }
+
+      #top-nav-menu {
+        gap: 8px !important;
+        align-items: center;
+      }
+
+      #top-nav-menu button {
+        position: relative;
+        border: 1px solid transparent !important;
+        border-radius: 10px !important;
+        padding: 9px 14px !important;
+        background: rgba(3,75,116,.42) !important;
+        color: rgba(255,255,255,.92) !important;
+        box-shadow: 0 3px 8px rgba(0,0,0,.08) !important;
+        transition: transform .18s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease !important;
+      }
+
+      #top-nav-menu button:hover {
+        transform: translateY(-1px);
+        background: rgba(3,61,96,.66) !important;
+        border-color: rgba(255,255,255,.18) !important;
+        box-shadow: 0 6px 14px rgba(0,0,0,.15) !important;
+      }
+
+      #top-nav-menu button.ring-2 {
+        background: rgba(255,255,255,.10) !important;
+        border-color: rgba(255,255,255,.85) !important;
+        box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 6px 16px rgba(0,0,0,.15) !important;
+      }
+
+      #btn-logout {
+        min-width: 64px;
+        border-radius: 10px !important;
+        padding: 10px 15px !important;
+        background: rgba(0,54,86,.62) !important;
+        border: 1px solid rgba(255,255,255,.20) !important;
+        box-shadow: 0 5px 14px rgba(0,0,0,.12) !important;
+      }
+
+      /* Tarjeta de acceso a Nuevo registro */
+      .cc-entry-card {
+        --accent: var(--cc-blue);
+        --accent-dark: var(--cc-blue-dark);
+        --soft: #eaf6fd;
+        position: relative;
+        display: grid !important;
+        grid-template-columns: minmax(230px, 1fr) minmax(280px, 1.15fr) minmax(190px, .72fr);
+        align-items: center;
+        gap: 24px;
+        padding: 12px 16px 12px 20px !important;
+        min-height: 86px;
+        overflow: hidden;
+        border: 1px solid #e7edf4 !important;
+        border-radius: 14px !important;
+        background: linear-gradient(110deg, #ffffff 0%, #fbfdff 68%, var(--soft) 100%) !important;
+        box-shadow: 0 8px 22px rgba(15,23,42,.13) !important;
+      }
+
+      .cc-entry-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 12px;
+        bottom: 12px;
+        width: 5px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, var(--accent), var(--accent-dark));
+      }
+
+      .cc-entry-info {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        min-width: 0;
+      }
+
+      .cc-entry-icon {
+        width: 48px;
+        height: 48px;
+        flex: 0 0 48px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: var(--soft);
+        color: var(--accent-dark);
+        font-size: 25px;
+        box-shadow: inset 0 0 0 1px rgba(15,23,42,.04);
+      }
+
+      .cc-entry-title {
+        margin: 0 !important;
+        font-size: 18px !important;
+        line-height: 1.2 !important;
+        font-weight: 800 !important;
+        color: #162033 !important;
+      }
+
+      .cc-entry-description {
+        margin-top: 4px !important;
+        color: #64748b !important;
+        font-size: 12px !important;
+        line-height: 1.35 !important;
+      }
+
+      .cc-entry-helper {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 0;
+        padding: 9px 13px;
+        border-radius: 11px;
+        background: rgba(255,255,255,.72);
+        border: 1px solid rgba(148,163,184,.18);
+        color: #475569;
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .cc-entry-helper-icon {
+        font-size: 24px;
+        flex: 0 0 auto;
+      }
+
+      .cc-entry-action {
+        width: 100%;
+        min-height: 54px;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 13px;
+        padding: 10px 16px !important;
+        border: 0 !important;
+        border-radius: 11px !important;
+        color: #fff !important;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark)) !important;
+        box-shadow: 0 7px 16px color-mix(in srgb, var(--accent) 28%, transparent) !important;
+        font-size: 15px !important;
+        font-weight: 800 !important;
+        transition: transform .18s ease, box-shadow .18s ease, filter .18s ease !important;
+      }
+
+      .cc-entry-action:hover {
+        transform: translateY(-2px) !important;
+        filter: brightness(1.04);
+        box-shadow: 0 10px 22px color-mix(in srgb, var(--accent) 34%, transparent) !important;
+      }
+
+      .cc-entry-action:active { transform: translateY(0) !important; }
+
+      .cc-entry-plus { font-size: 26px; font-weight: 300; line-height: 1; }
+
+      .cc-entry-arrow {
+        width: 32px;
+        height: 32px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,.20);
+        font-size: 20px;
+        line-height: 1;
+      }
+
+      .cc-entry-card[data-theme="orders"] { --accent: #0b84c6; --accent-dark: #075f91; --soft: #eaf6fd; }
+      .cc-entry-card[data-theme="crm"] { --accent: #4f46e5; --accent-dark: #4338ca; --soft: #f0efff; }
+      .cc-entry-card[data-theme="nomina"] { --accent: #f59e0b; --accent-dark: #ea580c; --soft: #fff5df; }
+
+      /* Refuerzo visual de los CTA: la regla con ID de módulo no debe poder
+         convertir accidentalmente el CTA en un botón blanco/invisible. */
+      #section-orders .cc-entry-action {
+        color: #ffffff !important;
+        background: linear-gradient(135deg, #0b84c6 0%, #075f91 100%) !important;
+        border: 0 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        min-height: 54px !important;
+        z-index: 2;
+      }
+
+      #section-orders .cc-entry-action .cc-entry-plus,
+      #section-orders .cc-entry-action .cc-entry-arrow {
+        color: #ffffff !important;
+      }
+
+      /* Botones de herramientas y acciones */
+      #section-orders button, #section-crm button, #section-technicians button {
+        transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+      }
+
+      #section-orders button:not(.cc-entry-action):hover,
+      #section-crm button:not(.cc-entry-action):hover,
+      #section-technicians button:not(.cc-entry-action):hover {
+        transform: translateY(-1px);
+      }
+
+      /* Cabecera de los listados */
+      #section-orders > section:not(.cc-entry-card),
+      #section-crm > section:not(.cc-entry-card),
+      #section-technicians > section:not(.cc-entry-card) {
+        border-radius: 14px !important;
+        box-shadow: 0 7px 20px rgba(15,23,42,.10) !important;
+      }
+
+      /* Modal de alta/edición */
+      [id$="-entry-modal"] {
+        background: rgba(8,18,32,.72) !important;
+        backdrop-filter: blur(7px);
+      }
+
+      [id$="-entry-modal"] > div {
+        border: 1px solid rgba(255,255,255,.35);
+        box-shadow: 0 24px 70px rgba(0,0,0,.32) !important;
+      }
+
+      @media (max-width: 900px) {
+        .cc-entry-card { grid-template-columns: 1fr; gap: 12px; padding: 15px 16px 15px 20px !important; }
+        .cc-entry-helper { display: none; }
+      }
     </style>
 
     <!-- SheetJS para importación y exportación de Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <!-- Chart.js para el Dashboard y Gráficos (versión fijada, antes cargaba "latest" sin control de cambios) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+<style id="cc-responsive-modern-ui">
+/* =========================================================
+   COMFORT COOL — UI RESPONSIVE MOBILE FIRST
+   Mejora visual sin alterar la lógica de negocio.
+   ========================================================= */
+:root{
+  --cc-header-1:#0877b5;
+  --cc-header-2:#05689f;
+  --cc-surface:#ffffff;
+  --cc-bg:#17202f;
+  --cc-text:#132238;
+  --cc-muted:#64748b;
+  --cc-blue:#168bd0;
+  --cc-blue-dark:#075fa0;
+  --cc-shadow:0 12px 30px rgba(2,24,45,.14);
+}
+
+/* Header desktop más limpio */
+#app-container > header{
+  background:linear-gradient(135deg,var(--cc-header-1) 0%,#087fbe 52%,var(--cc-header-2) 100%) !important;
+  padding:18px 24px !important;
+}
+#app-container > header > div{
+  max-width:1280px !important;
+}
+#app-container > header h1{
+  letter-spacing:-.025em;
+}
+#top-nav-menu button{
+  min-height:40px;
+  white-space:nowrap;
+}
+
+/* Tarjetas superiores de Órdenes / CRM / Nómina */
+.cc-entry-card{
+  min-height:96px !important;
+  padding:14px 18px 14px 22px !important;
+  grid-template-columns:minmax(240px,1fr) minmax(260px,1fr) minmax(240px,.78fr) !important;
+  border-radius:18px !important;
+  box-shadow:var(--cc-shadow) !important;
+}
+.cc-entry-card::before{width:5px !important; top:14px !important; bottom:14px !important;}
+.cc-entry-info{gap:15px !important;}
+.cc-entry-icon{
+  width:52px !important;height:52px !important;flex-basis:52px !important;
+  border-radius:15px !important;font-size:27px !important;
+}
+.cc-entry-title{font-size:20px !important;letter-spacing:-.015em;}
+.cc-entry-description{font-size:12.5px !important;}
+.cc-entry-helper{
+  min-height:52px;
+  border-radius:14px !important;
+  background:rgba(248,250,252,.86) !important;
+  color:#475569 !important;
+}
+.cc-entry-action{
+  min-height:58px !important;
+  border-radius:14px !important;
+  padding:11px 18px !important;
+  font-size:16px !important;
+  letter-spacing:-.01em;
+  box-shadow:0 10px 22px rgba(7,95,145,.20) !important;
+}
+.cc-entry-action .cc-entry-arrow{
+  width:34px;height:34px;background:rgba(255,255,255,.22);
+}
+
+/* Evita que el contenido quede excesivamente pegado en móvil */
+@media (max-width:900px){
+  #app-container > header{padding:14px 14px 16px !important;}
+  #app-container > header > div{gap:12px !important;}
+  #app-container > header h1{font-size:27px !important;line-height:1.1 !important;}
+  #app-container > header p{font-size:12px !important;line-height:1.4 !important;max-width:calc(100% - 64px);}
+  #logged-user-badge{max-width:100%;font-size:10px !important;}
+  main.max-w-7xl{padding:12px !important;}
+  main.max-w-7xl.space-y-8{gap:16px !important;}
+
+  /* Header móvil tipo app */
+  #app-container > header > div > div:last-child{
+    position:relative !important;
+    width:100% !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:8px !important;
+    min-height:48px;
+  }
+  #mobile-menu-toggle{
+    display:grid !important;
+    place-items:center;
+    width:46px;height:46px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.20);
+    background:rgba(0,60,95,.48);
+    color:#fff;
+    font-size:24px;
+    line-height:1;
+    box-shadow:0 6px 18px rgba(0,0,0,.14);
+    cursor:pointer;
+    transition:transform .18s ease,background .18s ease;
+    z-index:30;
+  }
+  #mobile-menu-toggle:active{transform:scale(.96);}
+  #mobile-menu-toggle[aria-expanded="true"]{background:rgba(255,255,255,.15);}
+  #top-nav-menu{
+    display:none !important;
+    position:absolute !important;
+    top:54px;left:0;right:0;
+    z-index:25;
+    padding:10px !important;
+    border-radius:16px;
+    background:rgba(4,76,116,.98);
+    border:1px solid rgba(255,255,255,.13);
+    box-shadow:0 18px 40px rgba(0,0,0,.25);
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px !important;
+    backdrop-filter:blur(12px);
+  }
+  #top-nav-menu.mobile-open{display:grid !important;}
+  #top-nav-menu button{
+    width:100%;
+    min-height:44px;
+    padding:9px 10px !important;
+    font-size:12px !important;
+    border-radius:11px !important;
+    box-shadow:none !important;
+    text-align:center;
+  }
+  #btn-logout{min-height:46px !important;padding:9px 13px !important;}
+  #birthday-alert{position:absolute;top:54px;left:0;right:0;z-index:24;}
+
+  /* Banner móvil: información arriba y CTA a todo el ancho */
+  .cc-entry-card{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:12px !important;
+    min-height:0 !important;
+    padding:14px 14px 14px 18px !important;
+    border-radius:18px !important;
+  }
+  .cc-entry-card::before{top:12px !important;bottom:12px !important;width:4px !important;}
+  .cc-entry-info{align-items:center !important;gap:12px !important;}
+  .cc-entry-icon{width:48px !important;height:48px !important;flex-basis:48px !important;font-size:24px !important;}
+  .cc-entry-title{font-size:18px !important;}
+  .cc-entry-description{font-size:11.5px !important;margin-top:3px !important;}
+  .cc-entry-helper{display:none !important;}
+  .cc-entry-action{
+    width:100% !important;
+    min-height:54px !important;
+    border-radius:13px !important;
+    font-size:15px !important;
+    gap:11px !important;
+  }
+  .cc-entry-plus{font-size:23px !important;}
+  .cc-entry-arrow{width:30px !important;height:30px !important;font-size:19px !important;}
+
+  /* Paneles de datos más cómodos en móvil */
+  #section-orders > section:not(.cc-entry-card),
+  #section-crm > section:not(.cc-entry-card),
+  #section-technicians > section:not(.cc-entry-card){border-radius:16px !important;}
+  #section-orders > section:not(.cc-entry-card) > div:first-child,
+  #section-crm > section:not(.cc-entry-card) > div:first-child,
+  #section-technicians > section:not(.cc-entry-card) > div:first-child{padding:14px !important;}
+}
+
+@media (max-width:520px){
+  #app-container > header{padding:12px 10px 14px !important;}
+  #app-container > header > div{align-items:stretch !important;}
+  #app-container > header h1{font-size:25px !important;}
+  #app-container > header p{font-size:11px !important;max-width:82%;}
+  #logged-user-badge{display:flex !important;align-items:center;justify-content:space-between;width:100%;padding:6px 9px !important;}
+  #top-nav-menu{grid-template-columns:1fr 1fr !important;}
+  #top-nav-menu button{font-size:11px !important;padding:8px 6px !important;}
+  #btn-logout{font-size:12px !important;}
+  .cc-entry-card{padding:13px 12px 13px 16px !important;}
+  .cc-entry-title{font-size:17px !important;}
+  .cc-entry-action{min-height:52px !important;}
+}
+
+/* En desktop ocultar el hamburguesa; en móvil el JS lo muestra */
+#mobile-menu-toggle{display:none;}
+</style>
+
 </head>
 <body class="bg-[#1e2330] min-h-screen font-sans">
 
@@ -1552,7 +1975,7 @@
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
                 <div>
                     <h1 class="text-3xl font-bold">❄️ Comfort Cool</h1>
-                    <p class="text-sky-100 text-sm mt-1">Sistema de Operaciones, Órdenes, CRM, Técnicos, Gantt, Financiero, Seguimiento, Comercial y Dashboard</p>
+                    <p class="text-sky-100 text-sm mt-1">Sistema de Operaciones, Órdenes, CRM, Nómina, Gantt, Financiero, Seguimiento, Comercial y Dashboard</p>
                     
                     <!-- Indicador fijo del usuario conectado -->
                     <div id="logged-user-badge" class="mt-2 inline-flex items-center gap-2 bg-sky-800/80 border border-sky-500/50 px-3 py-1 rounded-lg text-xs font-semibold text-sky-100">
@@ -1562,6 +1985,7 @@
                 </div>
                 <div class="flex items-center gap-4">
                     <!-- Menú Superior -->
+                    <button type="button" id="mobile-menu-toggle" aria-expanded="false" aria-controls="top-nav-menu" aria-label="Abrir menú">☰</button>
                     <nav id="top-nav-menu" class="flex flex-wrap gap-2">
                         <button onclick="switchTab('orders')" id="btn-orders" class="px-3.5 py-2 font-semibold rounded-lg shadow transition text-sm bg-sky-900 text-white ring-2 ring-white/50">
                             📋 Órdenes
@@ -1570,7 +1994,7 @@
                             📇 CRM Clientes
                         </button>
                         <button onclick="switchTab('technicians')" id="btn-technicians" class="px-3.5 py-2 font-semibold rounded-lg shadow transition text-sm bg-sky-800/50 text-sky-200 hover:bg-sky-800">
-                            👷‍♂️ Técnicos
+                            👷‍♂️ Nómina
                         </button>
                         <button onclick="switchTab('gantt')" id="btn-gantt" class="px-3.5 py-2 font-semibold rounded-lg shadow transition text-sm bg-sky-800/50 text-sky-200 hover:bg-sky-800">
                             📊 Gantt
@@ -1588,6 +2012,12 @@
                             📈 Dashboard
                         </button>
                     </nav>
+                    <div id="birthday-alert" class="hidden w-full md:w-auto bg-amber-100 border border-amber-300 text-amber-900 px-3 py-2 rounded-lg shadow-sm text-xs font-semibold">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span>🎂 Cumpleaños de hoy:</span>
+                            <div id="birthday-list" class="flex flex-wrap items-center gap-2"></div>
+                        </div>
+                    </div>
                     <button id="btn-logout" class="bg-sky-900 hover:bg-sky-950 text-white px-3.5 py-2 rounded-lg text-sm font-semibold transition shadow-sm border border-sky-600">
                         🚪 Salir
                     </button>
@@ -1603,6 +2033,7 @@
                 <section class="bg-white p-6 rounded-xl shadow-md">
                     <h2 class="text-xl font-bold text-slate-800 mb-4">Crear Nueva Orden de Servicio</h2>
                     <form id="order-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <input type="hidden" id="order-edit-id" value="" />
                         
                         <div class="space-y-1">
                             <label for="service-type" class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Tipo de Servicio:</label>
@@ -1662,6 +2093,16 @@
                                 required
                             >
                                 <option value="">-- Seleccione un Técnico --</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label for="order-technician-aux" class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Técnico Auxiliar:</label>
+                            <select
+                                id="order-technician-aux"
+                                class="w-full border border-slate-300 p-2.5 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+                            >
+                                <option value="">-- Sin Técnico Auxiliar --</option>
                             </select>
                         </div>
 
@@ -1746,6 +2187,14 @@
                             >
                                 Registrar y Asignar Orden de Servicio
                             </button>
+                            <button
+                                type="button"
+                                id="cancel-order-edit-btn"
+                                onclick="window.cancelOrderEdit()"
+                                class="hidden w-full mt-2 bg-slate-200 text-slate-700 font-semibold py-3 rounded-lg hover:bg-slate-300 transition"
+                            >
+                                Cancelar Edición
+                            </button>
                         </div>
                     </form>
                 </section>
@@ -1761,7 +2210,7 @@
                             </button>
 
                             <!-- Elemento restringido para perfil Administrativo -->
-                            <label for="excel-file-input" class="import-excel-action bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer shadow-sm transition flex items-center gap-2" title="Estructura recomendada en Excel: Nro. Orden, Cliente, Servicio, Técnico, Cantidad, Fecha Agendamiento, Hora, Total Facturado, Valor Abono, Fecha Abono, Medio de Pago, Estado">
+                            <label for="excel-file-input" class="import-excel-action bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer shadow-sm transition flex items-center gap-2" title="Estructura recomendada en Excel: Nro. Orden, Cliente, Servicio, Técnico, Técnico Auxiliar, Cantidad, Fecha Agendamiento, Hora, Total Facturado, Valor Abono, Fecha Abono, Medio de Pago, Estado">
                                 📥 Importar Excel
                                 <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="hidden" />
                             </label>
@@ -1835,6 +2284,7 @@
                                     <th scope="col" class="p-4">Cliente</th>
                                     <th scope="col" class="p-4">Servicio</th>
                                     <th scope="col" class="p-4">Técnico</th>
+                                    <th scope="col" class="p-4">Técnico Auxiliar</th>
                                     <th scope="col" class="p-4">Cantidad</th>
                                     <th scope="col" class="p-4">Fecha Agendamiento</th>
                                     <th scope="col" class="p-4">Hora</th>
@@ -1945,10 +2395,10 @@
                 </section>
             </section>
 
-            <!-- ================= MÓDULO DE TÉCNICOS ================= -->
+            <!-- ================= MÓDULO DE NÓMINA ================= -->
             <section id="section-technicians" class="space-y-8 hidden">
                 <section class="bg-white p-6 rounded-xl shadow-md">
-                    <h2 id="tech-form-title" class="text-xl font-bold text-slate-800 mb-4">Registro de Nuevo Técnico</h2>
+                    <h2 id="tech-form-title" class="text-xl font-bold text-slate-800 mb-4">Registro de Nuevo Colaborador</h2>
                     <form id="tech-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <input type="hidden" id="tech-id" />
                         <div class="space-y-1">
@@ -1962,6 +2412,27 @@
                         <div class="space-y-1">
                             <label for="tech-phone" class="block text-xs font-bold text-slate-700 uppercase">Celular / WhatsApp:</label>
                             <input type="tel" id="tech-phone" placeholder="Ej: 3001234567" class="w-full border border-slate-300 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" required />
+                        </div>
+                        <div class="space-y-1">
+                            <label for="tech-status" class="block text-xs font-bold text-slate-700 uppercase">Estado:</label>
+                            <select id="tech-status" class="w-full border border-slate-300 p-2.5 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white" required>
+                                <option value="Activo">Activo</option>
+                                <option value="Suspendido">Suspendido</option>
+                                <option value="Inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label for="tech-position" class="block text-xs font-bold text-slate-700 uppercase">Cargo:</label>
+                            <select id="tech-position" class="w-full border border-slate-300 p-2.5 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white" required>
+                                <option value="Técnico">Técnico</option>
+                                <option value="Administrador">Administrador</option>
+                                <option value="CEO">CEO</option>
+                                <option value="Soporte TI">Soporte TI</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label for="tech-birth-date" class="block text-xs font-bold text-slate-700 uppercase">Fecha de Nacimiento:</label>
+                            <input type="date" id="tech-birth-date" class="w-full border border-slate-300 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" required />
                         </div>
                         <div class="space-y-1">
                             <label for="tech-rh" class="block text-xs font-bold text-slate-700 uppercase">Grupo Sanguíneo RH:</label>
@@ -1989,12 +2460,9 @@
                             <label for="tech-emergency-phone" class="block text-xs font-bold text-slate-700 uppercase">Celular de Emergencia:</label>
                             <input type="tel" id="tech-emergency-phone" placeholder="Ej: 3009876543" class="w-full border border-slate-300 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" required />
                         </div>
-                        <div class="space-y-1">
-                            <label for="tech-extra-hours" class="block text-xs font-bold text-slate-700 uppercase">Horas Extra:</label>
-                            <input type="number" id="tech-extra-hours" placeholder="Ej: 4" min="0" step="0.5" class="w-full border border-slate-300 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" required />
-                        </div>
+
                         <div class="lg:col-span-4 flex gap-2 pt-2">
-                            <button type="submit" id="submit-tech-btn" class="flex-1 bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 transition shadow-md">Guardar Técnico</button>
+                            <button type="submit" id="submit-tech-btn" class="flex-1 bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 transition shadow-md">Guardar Colaborador</button>
                             <button type="button" id="cancel-tech-edit-btn" onclick="resetTechForm()" class="hidden bg-slate-400 text-white font-semibold px-6 py-3 rounded-lg hover:bg-slate-500 transition shadow-md">Cancelar</button>
                         </div>
                     </form>
@@ -2002,11 +2470,11 @@
 
                 <section class="bg-white rounded-xl shadow-md overflow-hidden">
                     <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <h2 class="text-lg font-bold text-slate-800">Listado de Técnicos Registrados</h2>
+                        <h2 class="text-lg font-bold text-slate-800">Listado de Colaboradores Registrados</h2>
                         <div class="flex flex-wrap items-center gap-3">
                             <span id="tech-counter" class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-bold">Total: 0</span>
                             
-                            <button onclick="exportFilteredTechniciansToExcel()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer shadow-sm transition flex items-center gap-2" title="Exportar a Excel los técnicos filtrados actualmente">
+                            <button onclick="exportFilteredTechniciansToExcel()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer shadow-sm transition flex items-center gap-2" title="Exportar a Excel los colaboradores filtrados actualmente">
                                 📤 Exportar Excel Filtrado
                             </button>
                         </div>
@@ -2049,14 +2517,16 @@
                                     <th scope="col" class="p-4">Técnico</th>
                                     <th scope="col" class="p-4">Identificación</th>
                                     <th scope="col" class="p-4">Celular / WhatsApp</th>
+                                    <th scope="col" class="p-4">Estado</th>
+                                    <th scope="col" class="p-4">Cargo</th>
+                                    <th scope="col" class="p-4">Fecha de Nacimiento</th>
                                     <th scope="col" class="p-4">Salud (RH & EPS)</th>
                                     <th scope="col" class="p-4">Contacto de Emergencia</th>
-                                    <th scope="col" class="p-4">Horas Adicionales</th>
                                     <th scope="col" class="p-4 text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="tech-table-body" class="divide-y divide-slate-200 text-sm">
-                                <tr><td colspan="7" class="p-8 text-center text-slate-500">Cargando técnicos...</td></tr>
+                                <tr><td colspan="9" class="p-8 text-center text-slate-500">Cargando colaboradores...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -2366,7 +2836,7 @@
                                 </tr>
                             </thead>
                             <tbody id="commercial-table-body" class="divide-y divide-slate-200 text-sm">
-                                <tr><td colspan="7" class="p-8 text-center text-slate-500">Buscando oportunidades comerciales...</td></tr>
+                                <tr><td colspan="9" class="p-8 text-center text-slate-500">Buscando oportunidades comerciales...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -2384,6 +2854,18 @@
                         <button onclick="resetDashboardFilters()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-4 py-2 rounded-lg text-xs transition flex items-center gap-1">
                             🔄 Limpiar Filtros de Dashboard
                         </button>
+                    </div>
+
+                    <!-- Filtros Rápidos del Dashboard -->
+                    <div class="p-4 bg-sky-50 border border-sky-200 rounded-xl space-y-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-[11px] font-bold text-sky-800 uppercase mr-1">⚡ Filtros rápidos:</span>
+                            <button type="button" data-dashboard-quick-filter="today" class="dashboard-quick-filter bg-white border border-slate-300 hover:bg-sky-100 hover:border-sky-400 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs transition">Hoy</button>
+                            <button type="button" data-dashboard-quick-filter="yesterday" class="dashboard-quick-filter bg-white border border-slate-300 hover:bg-sky-100 hover:border-sky-400 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs transition">Ayer</button>
+                            <button type="button" data-dashboard-quick-filter="dayBefore" class="dashboard-quick-filter bg-white border border-slate-300 hover:bg-sky-100 hover:border-sky-400 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs transition">Antes de ayer</button>
+                            <button type="button" data-dashboard-quick-filter="currentMonth" class="dashboard-quick-filter bg-white border border-slate-300 hover:bg-sky-100 hover:border-sky-400 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs transition">Mes Actual</button>
+                            <button type="button" data-dashboard-quick-filter="previousMonth" class="dashboard-quick-filter bg-white border border-slate-300 hover:bg-sky-100 hover:border-sky-400 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs transition">Més anterior</button>
+                        </div>
                     </div>
 
                     <!-- Panel de Filtros Globales del Dashboard -->
@@ -2468,6 +2950,14 @@
                             <h3 class="font-bold text-slate-800 text-sm mb-3">🥧 Ponderación: Tipo de Servicio y Cantidad</h3>
                             <div class="relative flex-1 min-h-[280px] flex justify-center items-center">
                                 <canvas id="chart-service-pie"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Ingresos por Técnico -->
+                        <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col">
+                            <h3 class="font-bold text-slate-800 text-sm mb-3">💰 Ingresos por Técnico</h3>
+                            <div class="relative flex-1 min-h-[280px]">
+                                <canvas id="chart-tech-income"></canvas>
                             </div>
                         </div>
 
@@ -2730,6 +3220,215 @@
         const clientForm = document.getElementById('client-form');
         const techForm = document.getElementById('tech-form');
 
+        // Convierte los formularios principales de Órdenes, CRM y Nómina en ventanas emergentes
+        // para liberar espacio en cada módulo. Los formularios siguen siendo los mismos; solo cambia su presentación.
+        function setupEntryModals() {
+            const configs = [
+                {
+                    sectionId: 'section-orders',
+                    formId: 'order-form',
+                    modalId: 'order-entry-modal',
+                    titleId: 'order-entry-modal-title',
+                    buttonId: 'open-order-entry-btn',
+                    buttonText: '➕ Nueva Orden',
+                    icon: '📋',
+                    description: 'Registra y asigna una nueva orden de servicio.'
+                },
+                {
+                    sectionId: 'section-crm',
+                    formId: 'client-form',
+                    modalId: 'client-entry-modal',
+                    titleId: 'client-entry-modal-title',
+                    buttonId: 'open-client-entry-btn',
+                    buttonText: '➕ Nuevo Cliente',
+                    icon: '📇',
+                    description: 'Registra un nuevo cliente en el CRM.'
+                },
+                {
+                    sectionId: 'section-technicians',
+                    formId: 'tech-form',
+                    modalId: 'tech-entry-modal',
+                    titleId: 'tech-entry-modal-title',
+                    buttonId: 'open-tech-entry-btn',
+                    buttonText: '➕ Nuevo Colaborador',
+                    icon: '👷‍♂️',
+                    description: 'Registra un nuevo colaborador en Nómina.'
+                }
+            ];
+
+            configs.forEach(cfg => {
+                const section = document.getElementById(cfg.sectionId);
+                const form = document.getElementById(cfg.formId);
+                if (!section || !form || document.getElementById(cfg.modalId)) return;
+
+                const formSection = form.parentElement;
+                const card = document.createElement('section');
+                const theme = cfg.sectionId === 'section-orders' ? 'orders' : cfg.sectionId === 'section-crm' ? 'crm' : 'nomina';
+                const helper = cfg.sectionId === 'section-orders'
+                    ? 'Gestiona y asigna tus órdenes de servicio de forma rápida y eficiente.'
+                    : cfg.sectionId === 'section-crm'
+                        ? 'Gestiona tu cartera de clientes y mantén la información centralizada.'
+                        : 'Administra la información de tu equipo de trabajo en un solo lugar.';
+                const helperIcon = cfg.sectionId === 'section-orders' ? '📋' : cfg.sectionId === 'section-crm' ? '👥' : '👷';
+                card.className = 'cc-entry-card';
+                card.dataset.theme = theme;
+                card.innerHTML = `
+                    <div class="cc-entry-info">
+                        <div class="cc-entry-icon">${cfg.icon}</div>
+                        <div class="min-w-0">
+                            <h2 class="cc-entry-title">${cfg.sectionId === 'section-orders' ? 'Órdenes de Servicio' : cfg.sectionId === 'section-crm' ? 'Gestión de Clientes CRM' : 'Nómina'}</h2>
+                            <p class="cc-entry-description">${cfg.description}</p>
+                        </div>
+                    </div>
+                    <div class="cc-entry-helper">
+                        <span class="cc-entry-helper-icon">${helperIcon}</span>
+                        <span>${helper}</span>
+                    </div>
+                    <button type="button" id="${cfg.buttonId}" class="cc-entry-action" style="color:#fff !important;background:linear-gradient(135deg,#0b84c6,#075f91) !important;opacity:1 !important;visibility:visible !important;" onclick="window.openEntryModal('${cfg.modalId}')" aria-label="${cfg.buttonText.replace('➕ ', '')}">
+                        <span class="cc-entry-plus">＋</span>
+                        <span>${cfg.buttonText.replace('➕ ', '')}</span>
+                        <span class="cc-entry-arrow">›</span>
+                    </button>
+                `;
+
+                const modal = document.createElement('div');
+                modal.id = cfg.modalId;
+                modal.setAttribute('role', 'dialog');
+                modal.setAttribute('aria-modal', 'true');
+                modal.className = 'fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50';
+                modal.innerHTML = `
+                    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col">
+                        <div class="p-5 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white flex items-center justify-between gap-4">
+                            <div>
+                                <h3 id="${cfg.titleId}" class="text-xl font-bold text-slate-800">${cfg.buttonText.replace('➕ ', '')}</h3>
+                                <p class="text-xs text-slate-500 mt-1">${cfg.description}</p>
+                            </div>
+                            <button type="button" onclick="window.closeEntryModal('${cfg.modalId}')" class="shrink-0 w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xl shadow-sm transition" aria-label="Cerrar">×</button>
+                        </div>
+                        <div class="p-5 overflow-y-auto">
+                        </div>
+                    </div>`;
+
+                section.insertBefore(card, section.firstElementChild);
+                document.body.appendChild(modal);
+                modal.querySelector(':scope > div > div:last-child').appendChild(form);
+                form.classList.add('max-h-none');
+                if (formSection && formSection !== section) formSection.remove();
+
+                const entryButton = document.getElementById(cfg.buttonId);
+                if (entryButton) {
+                    entryButton.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        window.openEntryModal(cfg.modalId);
+                    });
+                }
+
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) window.closeEntryModal(cfg.modalId);
+                });
+            });
+        }
+
+        // Apertura/cierre robustos de los modales de alta y edición.
+        // Se fuerza display:flex para evitar que reglas CSS externas o el orden
+        // de las utilities (hidden/flex) vuelvan invisible el modal.
+        window.openEntryModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            if (!modal) {
+                console.warn(`No se encontró el modal: ${modalId}`);
+                return false;
+            }
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            modal.style.setProperty('display', 'flex', 'important');
+            modal.style.setProperty('visibility', 'visible', 'important');
+            modal.style.setProperty('opacity', '1', 'important');
+            modal.style.setProperty('z-index', '99999', 'important');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('overflow-hidden');
+            return true;
+        };
+
+        window.closeEntryModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            if (!modal) return false;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            modal.style.setProperty('display', 'none', 'important');
+            modal.setAttribute('aria-hidden', 'true');
+            if (![...document.querySelectorAll('[id$="-entry-modal"]')].some(m => !m.classList.contains('hidden'))) {
+                document.body.classList.remove('overflow-hidden');
+            }
+            return true;
+        };
+
+        // Delegación de eventos para los lápices de CRM y Nómina.
+        // Así la acción no depende de atributos onclick generados dinámicamente.
+        document.addEventListener('click', (event) => {
+            const clientButton = event.target.closest('[data-edit-client-id]');
+            if (clientButton) {
+                event.preventDefault();
+                event.stopPropagation();
+                window.editClient(clientButton.dataset.editClientId);
+                return;
+            }
+            const techButton = event.target.closest('[data-edit-technician-id]');
+            if (techButton) {
+                event.preventDefault();
+                event.stopPropagation();
+                window.editTechnician(techButton.dataset.editTechnicianId);
+            }
+        });
+
+        // Menú móvil: navegación compacta tipo aplicación.
+        (() => {
+            const toggle = document.getElementById('mobile-menu-toggle');
+            const nav = document.getElementById('top-nav-menu');
+            if (!toggle || !nav) return;
+            toggle.addEventListener('click', (event) => {
+                event.preventDefault();
+                const open = nav.classList.toggle('mobile-open');
+                toggle.setAttribute('aria-expanded', String(open));
+                toggle.textContent = open ? '×' : '☰';
+            });
+            nav.addEventListener('click', (event) => {
+                if (event.target.closest('button')) {
+                    nav.classList.remove('mobile-open');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    toggle.textContent = '☰';
+                }
+            });
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 900) {
+                    nav.classList.remove('mobile-open');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    toggle.textContent = '☰';
+                }
+            });
+        })();
+
+        setupEntryModals();
+
+        // Refuerzo: garantizar que Órdenes siempre tenga visible el botón "Nueva Orden"
+        // y que abra su formulario aunque el DOM haya sido alterado por otro módulo.
+        (() => {
+            const ordersSection = document.getElementById('section-orders');
+            const orderButton = document.getElementById('open-order-entry-btn');
+            const orderModal = document.getElementById('order-entry-modal');
+            if (ordersSection && orderButton && orderModal) {
+                orderButton.type = 'button';
+                orderButton.setAttribute('aria-label', 'Nueva Orden');
+                orderButton.onclick = (event) => {
+                    event.preventDefault();
+                    window.openEntryModal('order-entry-modal');
+                };
+            }
+        })();
+
+        const orderEntryModalEl = document.getElementById('order-entry-modal');
+        const clientEntryModalEl = document.getElementById('client-entry-modal');
+        const techEntryModalEl = document.getElementById('tech-entry-modal');
+
         const ordersTableBody = document.getElementById('orders-table-body');
         const clientsTableBody = document.getElementById('clients-table-body');
         const techTableBody = document.getElementById('tech-table-body');
@@ -2746,6 +3445,7 @@
         const dashFilterDate = document.getElementById('dash-filter-date');
         const dashFilterTech = document.getElementById('dash-filter-tech');
         const dashFilterService = document.getElementById('dash-filter-service');
+        const dashboardQuickFilters = document.querySelectorAll('[data-dashboard-quick-filter]');
 
         const kpiServicesCount = document.getElementById('kpi-services-count');
         const kpiTotalFactured = document.getElementById('kpi-total-factured');
@@ -2759,6 +3459,8 @@
         let chartDailyInstance = null;
         let chartPieInstance = null;
         let chartSeniorityInstance = null;
+        let chartTechIncomeInstance = null;
+        let dashboardQuickFilter = '';
 
         // Referencias de DOM - Seguimiento Técnico (Filtros)
         const trackingFilterService = document.getElementById('tracking-filter-service');
@@ -2827,6 +3529,7 @@
         const orderClientSelect = document.getElementById('order-client');
         const orderClientSearch = document.getElementById('order-client-search');
         const orderTechSelect = document.getElementById('order-technician');
+        const orderTechAuxSelect = document.getElementById('order-technician-aux');
         const serviceTypeSelect = document.getElementById('service-type');
         const orderCodeInput = document.getElementById('order-code');
         const serviceQuantityInput = document.getElementById('service-quantity');
@@ -2835,6 +3538,8 @@
         const scheduleDateInput = document.getElementById('schedule-date');
         const scheduleTimeInput = document.getElementById('schedule-time');
         const creationObservationInput = document.getElementById('creation-observation');
+        const orderEditIdInput = document.getElementById('order-edit-id');
+        const cancelOrderEditBtn = document.getElementById('cancel-order-edit-btn');
 
         const activeCounter = document.getElementById('active-counter');
         const clientCounter = document.getElementById('client-counter');
@@ -2855,11 +3560,15 @@
         const techNameInput = document.getElementById('tech-name');
         const techIdentificationInput = document.getElementById('tech-identification');
         const techPhoneInput = document.getElementById('tech-phone');
+        const techStatusInput = document.getElementById('tech-status');
+        const techPositionInput = document.getElementById('tech-position');
+        const techBirthDateInput = document.getElementById('tech-birth-date');
+        const birthdayAlert = document.getElementById('birthday-alert');
+        const birthdayList = document.getElementById('birthday-list');
         const techRhInput = document.getElementById('tech-rh');
         const techEpsInput = document.getElementById('tech-eps');
         const techEmergencyContactInput = document.getElementById('tech-emergency-contact');
         const techEmergencyPhoneInput = document.getElementById('tech-emergency-phone');
-        const techExtraHoursInput = document.getElementById('tech-extra-hours');
         const submitTechBtn = document.getElementById('submit-tech-btn');
         const cancelTechEditBtn = document.getElementById('cancel-tech-edit-btn');
         const techFormTitle = document.getElementById('tech-form-title');
@@ -2895,16 +3604,72 @@
             paymentModalDate.value = todayColombia;
         });
 
-        dashFilterMonth.addEventListener('change', () => { dashFilterDate.value = ""; renderDashboard(); });
-        dashFilterDate.addEventListener('change', () => { dashFilterMonth.value = ""; renderDashboard(); });
+        dashFilterMonth.addEventListener('change', () => { dashFilterDate.value = ""; dashboardQuickFilter = ''; updateDashboardQuickFilterButtons(); renderDashboard(); });
+        dashFilterDate.addEventListener('change', () => { dashFilterMonth.value = ""; dashboardQuickFilter = ''; updateDashboardQuickFilterButtons(); renderDashboard(); });
         dashFilterTech.addEventListener('change', renderDashboard);
         dashFilterService.addEventListener('change', renderDashboard);
+
+        function updateDashboardQuickFilterButtons() {
+            dashboardQuickFilters.forEach(button => {
+                const active = button.dataset.dashboardQuickFilter === dashboardQuickFilter;
+                button.classList.toggle('bg-sky-600', active);
+                button.classList.toggle('text-white', active);
+                button.classList.toggle('border-sky-600', active);
+                button.classList.toggle('bg-white', !active);
+                button.classList.toggle('text-slate-700', !active);
+            });
+        }
+
+        function applyDashboardQuickFilter(filter) {
+            const today = getColombiaCurrentDateString();
+            const baseDate = new Date(`${today}T00:00:00`);
+            let targetDate = '';
+
+            if (filter === 'today') {
+                targetDate = today;
+            } else if (filter === 'yesterday') {
+                const d = new Date(baseDate); d.setDate(d.getDate() - 1);
+                targetDate = d.toISOString().slice(0, 10);
+            } else if (filter === 'dayBefore') {
+                const d = new Date(baseDate); d.setDate(d.getDate() - 2);
+                targetDate = d.toISOString().slice(0, 10);
+            } else if (filter === 'currentMonth') {
+                dashFilterMonth.value = today.slice(0, 7);
+                dashFilterDate.value = '';
+                dashboardQuickFilter = filter;
+                updateDashboardQuickFilterButtons();
+                renderDashboard();
+                return;
+            } else if (filter === 'previousMonth') {
+                const d = new Date(baseDate);
+                d.setDate(1);
+                d.setMonth(d.getMonth() - 1);
+                dashFilterMonth.value = d.toISOString().slice(0, 7);
+                dashFilterDate.value = '';
+                dashboardQuickFilter = filter;
+                updateDashboardQuickFilterButtons();
+                renderDashboard();
+                return;
+            }
+
+            dashFilterDate.value = targetDate;
+            dashFilterMonth.value = '';
+            dashboardQuickFilter = filter;
+            updateDashboardQuickFilterButtons();
+            renderDashboard();
+        }
+
+        dashboardQuickFilters.forEach(button => {
+            button.addEventListener('click', () => applyDashboardQuickFilter(button.dataset.dashboardQuickFilter));
+        });
 
         window.resetDashboardFilters = () => {
             dashFilterMonth.value = "";
             dashFilterDate.value = "";
             dashFilterTech.value = "";
             dashFilterService.value = "";
+            dashboardQuickFilter = '';
+            updateDashboardQuickFilterButtons();
             renderDashboard();
         };
 
@@ -3260,6 +4025,7 @@
                         const clientName = row['Cliente'] || row['Cliente (CRM)'] || row['Razon Social'] || 'Cliente General';
                         const serviceType = row['Servicio'] || row['Tipo de Servicio'] || row['Tipo Servicio'] || 'Preventivo';
                         const technician = row['Técnico'] || row['Tecnico'] || row['Técnico Asignado'] || (cachedTechnicians[0] ? cachedTechnicians[0].name : 'Técnico General');
+                        const technicianAux = row['Técnico Auxiliar'] || row['Tecnico Auxiliar'] || row['Auxiliar'] || '';
                         const serviceQuantity = parseInt(row['Cantidad'] || row['Cantidad Servicios'] || 1) || 1;
                         
                         const rawDate = row['Fecha Agendamiento'] || row['Fecha'] || row['Agendamiento'] || row['Fecha_Agendamiento'];
@@ -3294,6 +4060,7 @@
                             clientName,
                             serviceType,
                             technician,
+                            technicianAux,
                             serviceQuantity,
                             totalFactured,
                             paidAmount,
@@ -3357,6 +4124,7 @@
                     "Celular Cliente": clientPhone,
                     "Servicio": order.serviceType || 'N/A',
                     "Técnico": order.technician || 'N/A',
+                    "Técnico Auxiliar": order.technicianAux || 'N/A',
                     "Cantidad": order.serviceQuantity || 1,
                     "Fecha Agendamiento": order.scheduleDate || 'N/A',
                     "Hora": order.scheduleTime || '08:00',
@@ -3491,15 +4259,17 @@
                 "EPS": tech.eps || 'N/A',
                 "Contacto de Emergencia": tech.emergencyContact || 'N/A',
                 "Celular de Emergencia": tech.emergencyPhone || 'N/A',
-                "Horas Extra": tech.extraHours || 0
+                "Estado": tech.status || 'Activo',
+                "Cargo": tech.position || 'Técnico',
+                "Fecha de Nacimiento": tech.birthDate || 'N/A'
             }));
 
             const worksheet = XLSX.utils.json_to_sheet(dataToExport);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Técnicos Filtrados");
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Nómina Filtrada");
 
             const dateStr = getColombiaCurrentDateString();
-            XLSX.writeFile(workbook, `Tecnicos_ComfortCool_${dateStr}.xlsx`);
+            XLSX.writeFile(workbook, `Nomina_ComfortCool_${dateStr}.xlsx`);
         };
 
         window.exportFilteredCommercialToExcel = () => {
@@ -3570,6 +4340,11 @@
             }
         });
 
+        // Edición CRM: el botón usa onclick directo y esta función abre el mismo modal de alta.
+        window.openClientEditModal = (id) => {
+            window.editClient(id);
+        };
+
         window.editClient = (id) => {
             const client = cachedClients.find(c => c.id === id);
             if (!client) return;
@@ -3579,10 +4354,12 @@
             clientAddressInput.value = client.address;
             clientDateInput.value = client.creationDate || getColombiaCurrentDateString();
             clientFormTitle.textContent = "Editar Cliente";
+            const clientModalTitle = document.getElementById('client-entry-modal-title');
+            if (clientModalTitle) clientModalTitle.textContent = "Editar Cliente";
             submitClientBtn.textContent = "Actualizar Cliente";
             submitClientBtn.className = "flex-1 bg-amber-600 text-white font-semibold py-3 rounded-lg hover:bg-amber-700 transition shadow-md";
             cancelEditBtn.classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.openEntryModal('client-entry-modal');
         };
 
         window.resetClientForm = () => {
@@ -3590,9 +4367,11 @@
             clientIdInput.value = "";
             clientDateInput.value = getColombiaCurrentDateString();
             clientFormTitle.textContent = "Registro de Nuevo Cliente";
+            document.getElementById('client-entry-modal-title').textContent = "Nuevo Cliente";
             submitClientBtn.textContent = "Guardar Cliente en CRM";
             submitClientBtn.className = "flex-1 bg-emerald-600 text-white font-semibold py-3 rounded-lg hover:bg-emerald-700 transition shadow-md";
             cancelEditBtn.classList.add('hidden');
+            window.closeEntryModal('client-entry-modal');
         };
 
         function getFilteredClients(clients, orders) {
@@ -3678,7 +4457,7 @@
                     <td class="p-4 text-slate-600 align-top">📅 ${escapeHtml(client.creationDate || 'N/A')}</td>
                     <td class="p-4 align-top max-w-md">${ordersDetailsHtml}</td>
                     <td class="p-4 text-center align-top flex justify-center gap-2">
-                        <button onclick="window.editClient('${client.id}')" class="bg-sky-100 text-sky-700 hover:bg-sky-200 font-bold px-3 py-1 rounded-lg text-xs transition">✏️ Editar</button>
+                        <button type="button" data-edit-client-id="${escapeHtml(client.id)}" class="bg-sky-100 text-sky-700 hover:bg-sky-200 font-bold px-3 py-1 rounded-lg text-xs transition cursor-pointer" title="Editar cliente">✏️ Editar</button>
                         <button onclick="window.deleteClient('${client.id}')" class="bg-rose-100 text-rose-700 hover:bg-rose-200 font-bold px-3 py-1 rounded-lg text-xs transition">🗑️ Eliminar</button>
                     </td>
                 `;
@@ -3712,6 +4491,7 @@
             snapshot.forEach(docSnap => techs.push({ id: docSnap.id, ...docSnap.data() }));
             cachedTechnicians = techs;
             renderTechnicians(techs);
+            renderBirthdayAlerts(techs);
             updateTechnicianDropdown(techs);
             renderGantt();
             renderTrackingView();
@@ -3723,20 +4503,22 @@
             const name = techNameInput.value.trim();
             const identification = techIdentificationInput.value.trim();
             const phone = techPhoneInput.value.trim();
+            const status = techStatusInput.value;
+            const position = techPositionInput.value;
+            const birthDate = techBirthDateInput.value;
             const rh = techRhInput.value;
             const eps = techEpsInput.value.trim();
             const emergencyContact = techEmergencyContactInput.value.trim();
             const emergencyPhone = techEmergencyPhoneInput.value.trim();
-            const extraHours = parseFloat(techExtraHoursInput.value) || 0;
 
-            if (!name || !rh || !eps || !emergencyContact || !emergencyPhone) return;
+            if (!name || !phone || !status || !position || !birthDate || !rh || !eps || !emergencyContact || !emergencyPhone) return;
             submitTechBtn.disabled = true;
             try {
                 if (id) {
-                    await updateDoc(doc(db, "technicians", id), { name, identification, phone, rh, eps, emergencyContact, emergencyPhone, extraHours });
+                    await updateDoc(doc(db, "technicians", id), { name, identification, phone, status, position, birthDate, rh, eps, emergencyContact, emergencyPhone });
                     alert("Técnico actualizado exitosamente.");
                 } else {
-                    await addDoc(collection(db, "technicians"), { name, identification, phone, rh, eps, emergencyContact, emergencyPhone, extraHours, createdAt: serverTimestamp() });
+                    await addDoc(collection(db, "technicians"), { name, identification, phone, status, position, birthDate, rh, eps, emergencyContact, emergencyPhone, createdAt: serverTimestamp() });
                 }
                 resetTechForm();
             } catch (error) {
@@ -3746,32 +4528,43 @@
             }
         });
 
+        // Edición Nómina: el botón usa onclick directo y esta función abre el mismo modal de alta.
+        window.openTechnicianEditModal = (id) => {
+            window.editTechnician(id);
+        };
+
         window.editTechnician = (id) => {
             const tech = cachedTechnicians.find(t => t.id === id);
             if (!tech) return;
             techIdInput.value = tech.id;
             techNameInput.value = tech.name;
             techIdentificationInput.value = tech.identification;
-            techPhoneInput.value = tech.phone;
+            techPhoneInput.value = tech.phone || '';
+            techStatusInput.value = tech.status || 'Activo';
+            techPositionInput.value = tech.position || 'Técnico';
+            techBirthDateInput.value = tech.birthDate || '';
             techRhInput.value = tech.rh || 'O+';
             techEpsInput.value = tech.eps || '';
             techEmergencyContactInput.value = tech.emergencyContact || '';
             techEmergencyPhoneInput.value = tech.emergencyPhone || '';
-            techExtraHoursInput.value = tech.extraHours || 0;
-            techFormTitle.textContent = "Editar Técnico";
-            submitTechBtn.textContent = "Actualizar Técnico";
+            techFormTitle.textContent = "Editar Colaborador";
+            const techModalTitle = document.getElementById('tech-entry-modal-title');
+            if (techModalTitle) techModalTitle.textContent = "Editar Colaborador";
+            submitTechBtn.textContent = "Actualizar Colaborador";
             submitTechBtn.className = "flex-1 bg-amber-600 text-white font-semibold py-3 rounded-lg hover:bg-amber-700 transition shadow-md";
             cancelTechEditBtn.classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.openEntryModal('tech-entry-modal');
         };
 
         window.resetTechForm = () => {
             techForm.reset();
             techIdInput.value = "";
-            techFormTitle.textContent = "Registro de Nuevo Técnico";
-            submitTechBtn.textContent = "Guardar Técnico";
+            techFormTitle.textContent = "Registro de Nuevo Colaborador";
+            document.getElementById('tech-entry-modal-title').textContent = "Nuevo Colaborador";
+            submitTechBtn.textContent = "Guardar Colaborador";
             submitTechBtn.className = "flex-1 bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 transition shadow-md";
             cancelTechEditBtn.classList.add('hidden');
+            window.closeEntryModal('tech-entry-modal');
         };
 
         function getFilteredTechnicians(techs) {
@@ -3792,7 +4585,7 @@
 
             techCounter.textContent = `Total: ${filteredTechs.length}`;
             if (filteredTechs.length === 0) {
-                techTableBody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500">No hay técnicos que coincidan con los filtros.</td></tr>`;
+                techTableBody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-slate-500">No hay colaboradores que coincidan con los filtros.</td></tr>`;
                 return;
             }
             techTableBody.innerHTML = '';
@@ -3805,13 +4598,26 @@
 
                 const row = document.createElement('tr');
                 row.className = "hover:bg-slate-50 transition";
+                const status = tech.status || 'Activo';
+                const statusClasses = status === 'Activo'
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : status === 'Suspendido'
+                        ? 'bg-amber-100 text-amber-800'
+                        : 'bg-slate-200 text-slate-700';
+                const position = tech.position || 'Técnico';
+                const birthDate = tech.birthDate ? new Date(`${tech.birthDate}T00:00:00`).toLocaleDateString('es-CO') : 'N/A';
                 row.innerHTML = `
                     <td class="p-4 font-semibold text-slate-800">${escapeHtml(tech.name)}</td>
                     <td class="p-4 text-slate-600">${escapeHtml(tech.identification || 'N/A')}</td>
-                    <td class="p-4 text-slate-600 flex items-center gap-2">
-                        <span>📞 ${escapeHtml(tech.phone || 'N/A')}</span>
-                        ${cleanPhone ? `<a href="${whatsappUrl}" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm transition">💬 WhatsApp</a>` : ''}
+                    <td class="p-4 text-slate-600">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span>📞 ${escapeHtml(tech.phone || 'N/A')}</span>
+                            ${cleanPhone ? `<a href="${whatsappUrl}" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm transition">💬 WhatsApp</a>` : ''}
+                        </div>
                     </td>
+                    <td class="p-4"><span class="${statusClasses} px-2.5 py-1 rounded-full text-xs font-bold">${escapeHtml(status)}</span></td>
+                    <td class="p-4 text-slate-700 font-semibold">${escapeHtml(position)}</td>
+                    <td class="p-4 text-slate-600 font-medium">🎂 ${escapeHtml(birthDate)}</td>
                     <td class="p-4 text-slate-600">
                         <span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs font-bold">🩸 ${escapeHtml(tech.rh || 'N/A')}</span>
                         <span class="block text-xs font-medium text-slate-700 mt-1">🏥 ${escapeHtml(tech.eps || 'N/A')}</span>
@@ -3821,18 +4627,45 @@
                         <p class="flex items-center gap-1 mt-0.5">📞 ${escapeHtml(tech.emergencyPhone || 'N/A')}</p>
                         ${cleanEmPhone ? `<a href="${emWhatsappUrl}" target="_blank" class="mt-1 bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded inline-flex items-center gap-1 shadow-sm transition">💬 Llamar/WApp Emergencia</a>` : ''}
                     </td>
-                    <td class="p-4 text-slate-600 font-semibold text-indigo-700">⏱️ ${tech.extraHours || 0} hrs</td>
-                    <td class="p-4 text-center flex justify-center gap-2">
-                        <button onclick="window.editTechnician('${tech.id}')" class="bg-sky-100 text-sky-700 hover:bg-sky-200 font-bold px-3 py-1 rounded-lg text-xs transition">✏️ Editar</button>
+                    <td class="p-4 text-center"><div class="flex justify-center gap-2">
+                        <button type="button" data-edit-technician-id="${escapeHtml(tech.id)}" class="bg-sky-100 text-sky-700 hover:bg-sky-200 font-bold px-3 py-1 rounded-lg text-xs transition cursor-pointer" title="Editar colaborador">✏️ Editar</button>
                         <button onclick="window.deleteTechnician('${tech.id}')" class="bg-rose-100 text-rose-700 hover:bg-rose-200 font-bold px-3 py-1 rounded-lg text-xs transition">🗑️ Eliminar</button>
-                    </td>
+                    </div></td>
                 `;
                 techTableBody.appendChild(row);
             });
         }
 
+        function renderBirthdayAlerts(techs) {
+            const today = new Date();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+            const birthdays = techs.filter(tech => {
+                if (!tech.birthDate) return false;
+                const parts = String(tech.birthDate).split('-');
+                return parts.length === 3 && Number(parts[1]) === month && Number(parts[2]) === day;
+            });
+
+            if (birthdays.length === 0) {
+                birthdayAlert.classList.add('hidden');
+                birthdayList.innerHTML = '';
+                return;
+            }
+
+            birthdayAlert.classList.remove('hidden');
+            birthdayList.innerHTML = birthdays.map(tech => {
+                const cleanPhone = tech.phone ? tech.phone.replace(/\D/g, '') : '';
+                const whatsappUrl = cleanPhone
+                    ? `https://wa.me/57${cleanPhone}?text=` + encodeURIComponent(`🎉 ¡Feliz cumpleaños, ${tech.name}! Todo el equipo de Comfort Cool te desea un excelente día y muchos éxitos. 🎂`)
+                    : '#';
+                return `<span class="inline-flex items-center gap-1 bg-white border border-amber-300 px-2 py-1 rounded-full">🎂 ${escapeHtml(tech.name)} ${cleanPhone ? `<a href="${whatsappUrl}" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-0.5 rounded-full text-[10px] font-bold">💬 WhatsApp</a>` : ''}</span>`;
+            }).join('');
+        }
+
         function updateTechnicianDropdown(techs) {
             orderTechSelect.innerHTML = `<option value="">-- Seleccione un Técnico --</option>`;
+            const currentOrderTechAux = orderTechAuxSelect.value;
+            orderTechAuxSelect.innerHTML = `<option value="">-- Sin Técnico Auxiliar --</option>`;
             trackingTechSelect.innerHTML = `<option value="">-- Seleccione Técnico --</option>`;
             
             const currentFilterTech = filterTechnician.value;
@@ -3849,11 +4682,13 @@
                 opt.value = tech.name;
                 opt.textContent = tech.name;
                 orderTechSelect.appendChild(opt.cloneNode(true));
+                orderTechAuxSelect.appendChild(opt.cloneNode(true));
                 trackingTechSelect.appendChild(opt.cloneNode(true));
                 filterTechnician.appendChild(opt.cloneNode(true));
                 ganttFilterTech.appendChild(opt.cloneNode(true));
                 dashFilterTech.appendChild(opt.cloneNode(true));
             });
+            orderTechAuxSelect.value = currentOrderTechAux;
             filterTechnician.value = currentFilterTech;
             ganttFilterTech.value = currentGanttTech;
             dashFilterTech.value = currentDashTech;
@@ -3884,6 +4719,7 @@
             const serviceType = serviceTypeSelect.value;
             const orderCode = orderCodeInput.value;
             const technician = orderTechSelect.value;
+            const technicianAux = orderTechAuxSelect.value;
             const serviceQuantity = parseInt(serviceQuantityInput.value) || 1;
             const totalFactured = parseFloat(serviceTotalManualInput.value) || 0;
             const paymentMethod = paymentMethodSelect.value;
@@ -3891,6 +4727,7 @@
             const scheduleTime = scheduleTimeInput.value;
             const creationObservation = creationObservationInput.value.trim();
             const btn = document.getElementById('submit-order-btn');
+            const editingOrderId = orderEditIdInput.value.trim();
 
             if (!clientName || !technician || !serviceType || !paymentMethod || !scheduleDate || !scheduleTime || !orderCode || !creationObservation) {
                 alert("Por favor complete todos los campos obligatorios.");
@@ -3899,37 +4736,103 @@
 
             btn.disabled = true;
             try {
-                await addDoc(collection(db, "services"), {
+                const orderPayload = {
                     orderCode,
                     clientName,
                     serviceType,
                     technician,
+                    technicianAux,
                     serviceQuantity,
                     totalFactured,
-                    paidAmount: 0,
-                    paymentsHistory: [],
                     paymentMethod,
                     scheduleDate,
                     scheduleTime,
-                    creationObservation,
-                    status: 'Despachado',
-                    statusRank: 1,
-                    pendingReason: '',
-                    observation: '',
-                    createdAt: serverTimestamp()
-                });
-                orderForm.reset();
-                orderCodeInput.value = "";
-                serviceTotalManualInput.value = "";
-                orderClientSearch.value = "";
-                scheduleDateInput.value = getColombiaCurrentDateString();
-                updateClientDropdown(cachedClients);
+                    creationObservation
+                };
+
+                if (editingOrderId) {
+                    await updateDoc(doc(db, "services", editingOrderId), orderPayload);
+                    alert(`¡La orden ${orderCode} fue actualizada exitosamente!`);
+                    window.cancelOrderEdit();
+                } else {
+                    await addDoc(collection(db, "services"), {
+                        ...orderPayload,
+                        paidAmount: 0,
+                        paymentsHistory: [],
+                        status: 'Despachado',
+                        statusRank: 1,
+                        pendingReason: '',
+                        observation: '',
+                        createdAt: serverTimestamp()
+                    });
+                    orderForm.reset();
+                    orderCodeInput.value = "";
+                    serviceTotalManualInput.value = "";
+                    orderClientSearch.value = "";
+                    scheduleDateInput.value = getColombiaCurrentDateString();
+                    updateClientDropdown(cachedClients);
+                }
             } catch (error) {
                 console.error(error);
+                alert(editingOrderId ? "Ocurrió un error al actualizar la orden." : "Ocurrió un error al registrar la orden.");
             } finally {
                 btn.disabled = false;
             }
         });
+
+        window.editOrder = (id) => {
+            const order = cachedOrders.find(o => o.id === id);
+            if (!order) {
+                alert("No se encontró la orden seleccionada.");
+                return;
+            }
+
+            orderEditIdInput.value = order.id;
+            serviceTypeSelect.value = order.serviceType || '';
+            orderCodeInput.value = order.orderCode || '';
+            orderClientSearch.value = '';
+            updateClientDropdown(cachedClients);
+            orderClientSelect.value = order.clientName || '';
+            orderTechSelect.value = order.technician || '';
+            orderTechAuxSelect.value = order.technicianAux || '';
+            serviceQuantityInput.value = order.serviceQuantity || 1;
+            serviceTotalManualInput.value = order.totalFactured || 0;
+            paymentMethodSelect.value = order.paymentMethod || '';
+            scheduleDateInput.value = order.scheduleDate || getColombiaCurrentDateString();
+            scheduleTimeInput.value = order.scheduleTime || '08:00';
+            creationObservationInput.value = order.creationObservation || '';
+
+            document.querySelector('#section-orders h2').textContent = `Editar Orden de Servicio ${order.orderCode || ''}`.trim();
+            document.getElementById('order-entry-modal-title').textContent = `Editar Orden de Servicio ${order.orderCode || ''}`.trim();
+            const btn = document.getElementById('submit-order-btn');
+            btn.textContent = 'Guardar Cambios de la Orden';
+            btn.className = 'w-full bg-amber-600 text-white font-semibold py-3 rounded-lg hover:bg-amber-700 transition shadow-md';
+            cancelOrderEditBtn.classList.remove('hidden');
+            orderCodeInput.classList.remove('bg-slate-50');
+            orderCodeInput.classList.add('bg-amber-50');
+
+            window.openEntryModal('order-entry-modal');
+        };
+
+        window.cancelOrderEdit = () => {
+            orderEditIdInput.value = '';
+            orderForm.reset();
+            orderCodeInput.value = '';
+            serviceTotalManualInput.value = '';
+            orderClientSearch.value = '';
+            scheduleDateInput.value = getColombiaCurrentDateString();
+            scheduleTimeInput.value = '08:00';
+            updateClientDropdown(cachedClients);
+            document.querySelector('#section-orders h2').textContent = 'Crear Nueva Orden de Servicio';
+            document.getElementById('order-entry-modal-title').textContent = 'Nueva Orden de Servicio';
+            const btn = document.getElementById('submit-order-btn');
+            btn.textContent = 'Registrar y Asignar Orden de Servicio';
+            btn.className = 'w-full bg-sky-600 text-white font-semibold py-3 rounded-lg hover:bg-sky-700 transition shadow-md';
+            cancelOrderEditBtn.classList.add('hidden');
+            orderCodeInput.classList.remove('bg-amber-50');
+            orderCodeInput.classList.add('bg-slate-50');
+            window.closeEntryModal('order-entry-modal');
+        };
 
         function getFilteredOrders(orders, clients) {
             const valOrderCode = filterOrderCode.value.trim().toLowerCase();
@@ -4009,7 +4912,8 @@
                         ${clientPhoneDisplay}
                     </td>
                     <td class="p-4 text-slate-600 text-xs"><b>${escapeHtml(order.serviceType)}</b></td>
-                    <td class="p-4 text-slate-600 font-medium">👷‍♂️ ${escapeHtml(order.technician)}</td>
+                    <td class="p-4 text-slate-600 font-medium">👷‍♂️ ${escapeHtml(order.technician || 'N/A')}</td>
+                    <td class="p-4 text-slate-600 text-xs">🧑‍🔧 ${escapeHtml(order.technicianAux || 'N/A')}</td>
                     <td class="p-4 text-slate-600 text-center font-bold">📦 ${order.serviceQuantity || 1}</td>
                     <td class="p-4 text-slate-600 text-xs">📅 ${escapeHtml(order.scheduleDate || 'N/A')}</td>
                     <td class="p-4 text-slate-600 text-xs font-mono font-semibold">⏰ ${escapeHtml(order.scheduleTime || '08:00')}</td>
@@ -4035,7 +4939,10 @@
                         ${order.status === 'Pendiente' && order.observation ? `<p class="text-[11px] text-amber-700 mt-0.5 italic">Obs Pend: ${escapeHtml(order.observation)}</p>` : ''}
                     </td>
                     <td class="p-4 text-center">
-                        <button onclick="window.deleteOrder('${order.id}')" class="text-rose-500 hover:text-rose-700 font-bold px-2 py-1 rounded" title="Eliminar orden">🗑️</button>
+                        <div class="flex items-center justify-center gap-2">
+                            <button onclick="window.editOrder('${order.id}')" class="text-sky-600 hover:text-sky-800 hover:bg-sky-50 font-bold px-2 py-1 rounded transition" title="Editar orden">✏️</button>
+                            <button onclick="window.deleteOrder('${order.id}')" class="text-rose-500 hover:text-rose-700 font-bold px-2 py-1 rounded" title="Eliminar orden">🗑️</button>
+                        </div>
                     </td>
                 `;
                 ordersTableBody.appendChild(row);
@@ -4155,6 +5062,7 @@
             renderMonthlyChart(monthlyMap);
             renderDailyChart(dailyMap);
             renderServicePieChart(serviceTypeMap);
+            renderTechIncomeChart(filteredOrders);
             renderSeniorityChart();
         }
 
@@ -4238,6 +5146,57 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        function renderTechIncomeChart(orders) {
+            const techIncomeMap = {};
+
+            orders.forEach(ord => {
+                const techName = ord.technician || 'Sin Asignar';
+                // Ingresos = dinero efectivamente recaudado (abonos), no valor facturado.
+                const income = parseFloat(ord.paidAmount) || 0;
+                techIncomeMap[techName] = (techIncomeMap[techName] || 0) + income;
+            });
+
+            const entries = Object.entries(techIncomeMap).sort((a, b) => b[1] - a[1]);
+            const labels = entries.map(([name]) => name);
+            const dataValues = entries.map(([, value]) => value);
+            const ctx = document.getElementById('chart-tech-income').getContext('2d');
+            if (chartTechIncomeInstance) chartTechIncomeInstance.destroy();
+
+            chartTechIncomeInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Ingresos Recaudados',
+                        data: dataValues,
+                        backgroundColor: '#10b981',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: context => `$ ${Number(context.raw || 0).toLocaleString('es-CO')}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => `$ ${Number(value).toLocaleString('es-CO')}`
+                            }
+                        }
                     }
                 }
             });
@@ -4460,9 +5419,6 @@
                 const cleanPhone = clientPhone !== 'N/A' ? clientPhone.replace(/\D/g, '') : '';
                 const whatsappUrl = cleanPhone ? `https://wa.me/57${cleanPhone}?text=` + encodeURIComponent(`Hola ${ord.clientName}, le escribimos del equipo técnico de Comfort Cool.`) : '#';
 
-                const totalFormatted = ord.totalFactured ? `$ ${ord.totalFactured.toLocaleString('es-CO')}` : '$ 0';
-                const paidFormatted = ord.paidAmount ? `$ ${ord.paidAmount.toLocaleString('es-CO')}` : '$ 0';
-
                 let badgeColor = 'bg-slate-100 text-slate-800';
                 if (ord.status === 'Despachado') badgeColor = 'bg-purple-100 text-purple-800';
                 else if (ord.status === 'En Camino') badgeColor = 'bg-blue-100 text-blue-800';
@@ -4494,7 +5450,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
                         <div>
                             <span class="block text-[11px] font-bold text-slate-500 uppercase">🛠️ Tipo de Servicio:</span>
                             <span class="font-bold text-slate-800 text-sm">${escapeHtml(ord.serviceType)} (Cant: ${ord.serviceQuantity || 1})</span>
@@ -4502,14 +5458,6 @@
                         <div>
                             <span class="block text-[11px] font-bold text-slate-500 uppercase">📅 Fecha y Hora Agendada:</span>
                             <span class="font-bold text-sky-800 text-sm">📅 ${escapeHtml(ord.scheduleDate || 'N/A')} ⏰ ${escapeHtml(ord.scheduleTime || '08:00')}</span>
-                        </div>
-                        <div>
-                            <span class="block text-[11px] font-bold text-slate-500 uppercase">💵 Facturado / Abonado:</span>
-                            <span class="font-semibold text-emerald-700">${totalFormatted}</span> | <span class="text-sky-800">${paidFormatted}</span>
-                        </div>
-                        <div>
-                            <span class="block text-[11px] font-bold text-slate-500 uppercase">💳 Método de Pago:</span>
-                            <span class="font-semibold text-slate-700">${escapeHtml(ord.paymentMethod || 'Efectivo')}</span>
                         </div>
                         <div class="lg:col-span-4 pt-2 border-t border-slate-200">
                             <span class="block text-[11px] font-bold text-slate-500 uppercase mb-1">📝 Observación Inicial (Instrucciones de la Orden):</span>
@@ -4674,7 +5622,7 @@
             commercialCounter.textContent = `Clientes Candidatos: ${candidates.length}`;
 
             if (candidates.length === 0) {
-                commercialTableBody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500">No hay clientes finalizados con más de 3 meses que coincidan con los filtros comerciales.</td></tr>`;
+                commercialTableBody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-slate-500">No hay clientes finalizados con más de 3 meses que coincidan con los filtros comerciales.</td></tr>`;
                 return;
             }
 
