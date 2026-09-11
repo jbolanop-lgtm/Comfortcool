@@ -1,0 +1,38 @@
+{
+  "name": "Comfort Cool - Sistema de Operaciones",
+  "short_name": "Comfort Cool",
+  "description": "Sistema de Órdenes, CRM, Nómina, Gantt, Financiero, Seguimiento y Dashboard de Comfort Cool.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#18202f",
+  "theme_color": "#087fc1",
+  "lang": "es-CO",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

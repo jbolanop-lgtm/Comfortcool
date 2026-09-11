@@ -6,6 +6,17 @@
     <meta name="description" content="Comfort Cool - Sistema de gestión operativa">
     <title>❄️ Comfort Cool</title>
 
+    <!-- ================= PWA: Manifest, tema e íconos ================= -->
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="theme-color" content="#087fc1" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Comfort Cool" />
+    <link rel="icon" href="./favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="./icon-192.png" sizes="192x192" type="image/png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+
     <!--
         MEJORA: Tailwind CDN (JIT en el navegador) reemplazado por CSS3 estático.
         Este bloque fue COMPILADO una sola vez (build), escaneando todas las clases
@@ -2018,6 +2029,9 @@
                             <div id="birthday-list" class="flex flex-wrap items-center gap-2"></div>
                         </div>
                     </div>
+                    <button id="btn-install-pwa" type="button" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-lg text-sm font-semibold transition shadow-sm border border-emerald-500 items-center gap-1.5" title="Instalar Comfort Cool como aplicación">
+                        📲 Instalar App
+                    </button>
                     <button id="btn-logout" class="bg-sky-900 hover:bg-sky-950 text-white px-3.5 py-2 rounded-lg text-sm font-semibold transition shadow-sm border border-sky-600">
                         🚪 Salir
                     </button>
@@ -3407,6 +3421,57 @@
             });
         })();
 
+        // ================= PWA: Service Worker + botón "Instalar App" =================
+        // Registra el service worker (necesario para que el navegador considere la
+        // app instalable y para el respaldo básico sin conexión). Si el archivo
+        // sw.js no existe todavía en el hosting, esto falla en silencio y el resto
+        // de la app sigue funcionando con normalidad.
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch((err) => {
+                    console.warn('No se pudo registrar el Service Worker (PWA):', err);
+                });
+            });
+        }
+
+        (() => {
+            const installBtn = document.getElementById('btn-install-pwa');
+            let deferredInstallPrompt = null;
+
+            // El navegador dispara este evento cuando la app cumple los
+            // requisitos técnicos para poder instalarse (manifest válido,
+            // service worker registrado, servido por HTTPS).
+            window.addEventListener('beforeinstallprompt', (event) => {
+                event.preventDefault();
+                deferredInstallPrompt = event;
+                if (installBtn) {
+                    installBtn.classList.remove('hidden');
+                    installBtn.classList.add('inline-flex');
+                }
+            });
+
+            if (installBtn) {
+                installBtn.addEventListener('click', async () => {
+                    if (!deferredInstallPrompt) return;
+                    deferredInstallPrompt.prompt();
+                    await deferredInstallPrompt.userChoice;
+                    deferredInstallPrompt = null;
+                    installBtn.classList.add('hidden');
+                    installBtn.classList.remove('inline-flex');
+                });
+            }
+
+            // Si ya está instalada (abierta en modo standalone) u ocurre el evento
+            // "appinstalled", ocultamos el botón definitivamente.
+            window.addEventListener('appinstalled', () => {
+                if (installBtn) {
+                    installBtn.classList.add('hidden');
+                    installBtn.classList.remove('inline-flex');
+                }
+                deferredInstallPrompt = null;
+            });
+        })();
+
         setupEntryModals();
 
         // Refuerzo: garantizar que Órdenes siempre tenga visible el botón "Nueva Orden"
@@ -4457,10 +4522,21 @@
                     <td class="p-4 text-slate-600 align-top">📅 ${escapeHtml(client.creationDate || 'N/A')}</td>
                     <td class="p-4 align-top max-w-md">${ordersDetailsHtml}</td>
                     <td class="p-4 text-center align-top flex justify-center gap-2">
-                        <button type="button" data-edit-client-id="${escapeHtml(client.id)}" class="bg-sky-100 text-sky-700 hover:bg-sky-200 font-bold px-3 py-1 rounded-lg text-xs transition cursor-pointer" title="Editar cliente">✏️ Editar</button>
+                        <button type="button" data-edit-client-id="${escapeHtml(client.id)}" class="cc-edit-client-btn bg-sky-100 text-sky-700 hover:bg-sky-200 font-bold px-3 py-1 rounded-lg text-xs transition cursor-pointer" title="Editar cliente">✏️ Editar</button>
                         <button onclick="window.deleteClient('${client.id}')" class="bg-rose-100 text-rose-700 hover:bg-rose-200 font-bold px-3 py-1 rounded-lg text-xs transition">🗑️ Eliminar</button>
                     </td>
                 `;
+                // Enganche directo (además de la delegación global) para garantizar
+                // que el clic siempre abra el modal de edición, sin depender de
+                // que el evento burbujee sin interferencias hasta document.
+                const editBtnEl = row.querySelector('.cc-edit-client-btn');
+                if (editBtnEl) {
+                    editBtnEl.addEventListener('click', (evt) => {
+                        evt.preventDefault();
+                        evt.stopPropagation();
+                        window.editClient(client.id);
+                    });
+                }
                 clientsTableBody.appendChild(row);
             });
         }
@@ -4628,10 +4704,20 @@
                         ${cleanEmPhone ? `<a href="${emWhatsappUrl}" target="_blank" class="mt-1 bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded inline-flex items-center gap-1 shadow-sm transition">💬 Llamar/WApp Emergencia</a>` : ''}
                     </td>
                     <td class="p-4 text-center"><div class="flex justify-center gap-2">
-                        <button type="button" data-edit-technician-id="${escapeHtml(tech.id)}" class="bg-sky-100 text-sky-700 hover:bg-sky-200 font-bold px-3 py-1 rounded-lg text-xs transition cursor-pointer" title="Editar colaborador">✏️ Editar</button>
+                        <button type="button" data-edit-technician-id="${escapeHtml(tech.id)}" class="cc-edit-tech-btn bg-sky-100 text-sky-700 hover:bg-sky-200 font-bold px-3 py-1 rounded-lg text-xs transition cursor-pointer" title="Editar colaborador">✏️ Editar</button>
                         <button onclick="window.deleteTechnician('${tech.id}')" class="bg-rose-100 text-rose-700 hover:bg-rose-200 font-bold px-3 py-1 rounded-lg text-xs transition">🗑️ Eliminar</button>
                     </div></td>
                 `;
+                // Enganche directo (además de la delegación global) para garantizar
+                // que el clic siempre abra el modal de edición.
+                const editTechBtnEl = row.querySelector('.cc-edit-tech-btn');
+                if (editTechBtnEl) {
+                    editTechBtnEl.addEventListener('click', (evt) => {
+                        evt.preventDefault();
+                        evt.stopPropagation();
+                        window.editTechnician(tech.id);
+                    });
+                }
                 techTableBody.appendChild(row);
             });
         }
@@ -4677,12 +4763,25 @@
             const currentDashTech = dashFilterTech.value;
             dashFilterTech.innerHTML = `<option value="">Todos los Técnicos</option>`;
 
-            techs.forEach(tech => {
+            // En el módulo de Órdenes, los campos "Técnico Asignado" y "Técnico
+            // Auxiliar" solo deben ofrecer colaboradores cuyo Cargo (Nómina) sea
+            // exactamente "Técnico" (se excluyen Administrador, CEO, Soporte TI, etc.).
+            const onlyFieldTechs = techs.filter(tech => tech.position === 'Técnico');
+
+            onlyFieldTechs.forEach(tech => {
                 const opt = document.createElement('option');
                 opt.value = tech.name;
                 opt.textContent = tech.name;
                 orderTechSelect.appendChild(opt.cloneNode(true));
                 orderTechAuxSelect.appendChild(opt.cloneNode(true));
+            });
+
+            // El resto de los módulos (Seguimiento, Filtros, Gantt, Dashboard)
+            // conservan la lista completa de colaboradores, sin este filtro.
+            techs.forEach(tech => {
+                const opt = document.createElement('option');
+                opt.value = tech.name;
+                opt.textContent = tech.name;
                 trackingTechSelect.appendChild(opt.cloneNode(true));
                 filterTechnician.appendChild(opt.cloneNode(true));
                 ganttFilterTech.appendChild(opt.cloneNode(true));
