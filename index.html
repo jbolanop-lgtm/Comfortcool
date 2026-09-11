@@ -1920,6 +1920,74 @@
 
 /* En desktop ocultar el hamburguesa; en móvil el JS lo muestra */
 #mobile-menu-toggle{display:none;}
+
+/* =========================================================
+   DASHBOARD — Tarjetas KPI mejoradas
+   ========================================================= */
+.cc-kpi-card{
+  --kpi-accent:#0369a1;
+  --kpi-accent-soft:#e0f2fe;
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px 16px 16px 18px;
+  border-radius:16px;
+  background:#ffffff;
+  border:1px solid #e6ebf2;
+  box-shadow:0 4px 14px rgba(15,23,42,.06);
+  overflow:hidden;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.cc-kpi-card::before{
+  content:'';
+  position:absolute;
+  left:0; top:10px; bottom:10px;
+  width:4px;
+  border-radius:999px;
+  background:var(--kpi-accent);
+}
+.cc-kpi-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 24px rgba(15,23,42,.12);
+}
+.cc-kpi-icon{
+  width:44px; height:44px; flex:0 0 44px;
+  display:grid; place-items:center;
+  border-radius:12px;
+  background:var(--kpi-accent-soft);
+  font-size:21px;
+}
+.cc-kpi-body{min-width:0;}
+.cc-kpi-label{
+  font-size:10.5px;
+  font-weight:800;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  color:#64748b;
+  margin:0;
+}
+.cc-kpi-value{
+  font-size:22px;
+  font-weight:900;
+  color:#0f172a;
+  margin-top:2px;
+  line-height:1.15;
+  word-break:break-word;
+}
+.cc-kpi-card[data-color="sky"]{--kpi-accent:#0284c7; --kpi-accent-soft:#e0f2fe;}
+.cc-kpi-card[data-color="emerald"]{--kpi-accent:#059669; --kpi-accent-soft:#d1fae5;}
+.cc-kpi-card[data-color="indigo"]{--kpi-accent:#4f46e5; --kpi-accent-soft:#e0e7ff;}
+.cc-kpi-card[data-color="rose"]{--kpi-accent:#e11d48; --kpi-accent-soft:#ffe4e6;}
+.cc-kpi-card[data-color="orange"]{--kpi-accent:#ea580c; --kpi-accent-soft:#ffedd5;}
+.cc-kpi-card[data-color="amber"]{--kpi-accent:#d97706; --kpi-accent-soft:#fef3c7;}
+.cc-kpi-card[data-color="teal"]{--kpi-accent:#0d9488; --kpi-accent-soft:#ccfbf1;}
+
+@media (max-width:640px){
+  .cc-kpi-card{padding:13px 13px 13px 16px;}
+  .cc-kpi-icon{width:38px;height:38px;flex-basis:38px;font-size:18px;}
+  .cc-kpi-value{font-size:19px;}
+}
 </style>
 
 </head>
@@ -2883,7 +2951,7 @@
                     </div>
 
                     <!-- Panel de Filtros Globales del Dashboard -->
-                    <div class="p-4 bg-slate-100 border border-slate-200 rounded-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div class="p-4 bg-slate-100 border border-slate-200 rounded-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                         <div class="space-y-1">
                             <label for="dash-filter-month" class="block text-[11px] font-bold text-slate-600 uppercase">📆 Filtrar por Mes:</label>
                             <input type="month" id="dash-filter-month" class="w-full border border-slate-300 p-2 rounded-lg text-xs bg-white focus:ring-2 focus:ring-sky-500" />
@@ -2911,33 +2979,64 @@
                                 <option value="Venta">Venta</option>
                             </select>
                         </div>
+                        <div class="space-y-1">
+                            <label for="dash-filter-year" class="block text-[11px] font-bold text-slate-600 uppercase">🗓️ Filtrar por Año (gráficas de tendencia):</label>
+                            <select id="dash-filter-year" class="w-full border border-slate-300 p-2 rounded-lg text-xs bg-white font-semibold focus:ring-2 focus:ring-sky-500">
+                                <option value="">Todos los Años</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Tarjetas KPI Principales (Incluyendo Clientes Morosos) -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-                        <div class="bg-sky-50 border border-sky-200 p-4 rounded-xl shadow-xs">
-                            <p class="text-xs font-bold text-sky-800 uppercase">Cantidad de Servicios</p>
-                            <p id="kpi-services-count" class="text-2xl font-black text-sky-900 mt-1">0</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
+                        <div class="cc-kpi-card" data-color="sky">
+                            <div class="cc-kpi-icon">🛠️</div>
+                            <div class="cc-kpi-body">
+                                <p class="cc-kpi-label">Cantidad de Servicios</p>
+                                <p id="kpi-services-count" class="cc-kpi-value">0</p>
+                            </div>
                         </div>
-                        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl shadow-xs">
-                            <p class="text-xs font-bold text-emerald-800 uppercase">Total Facturado</p>
-                            <p id="kpi-total-factured" class="text-2xl font-black text-emerald-900 mt-1">$ 0</p>
+                        <div class="cc-kpi-card" data-color="teal">
+                            <div class="cc-kpi-icon">👥</div>
+                            <div class="cc-kpi-body">
+                                <p class="cc-kpi-label">Cantidad de Clientes</p>
+                                <p id="kpi-clients-count" class="cc-kpi-value">0</p>
+                            </div>
                         </div>
-                        <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-xl shadow-xs">
-                            <p class="text-xs font-bold text-indigo-800 uppercase">Total Recaudado</p>
-                            <p id="kpi-total-collected" class="text-2xl font-black text-indigo-900 mt-1">$ 0</p>
+                        <div class="cc-kpi-card" data-color="emerald">
+                            <div class="cc-kpi-icon">💰</div>
+                            <div class="cc-kpi-body">
+                                <p class="cc-kpi-label">Total Facturado</p>
+                                <p id="kpi-total-factured" class="cc-kpi-value">$ 0</p>
+                            </div>
                         </div>
-                        <div class="bg-rose-50 border border-rose-200 p-4 rounded-xl shadow-xs">
-                            <p class="text-xs font-bold text-rose-800 uppercase">Saldo Pendiente</p>
-                            <p id="kpi-total-balance" class="text-2xl font-black text-rose-900 mt-1">$ 0</p>
+                        <div class="cc-kpi-card" data-color="indigo">
+                            <div class="cc-kpi-icon">💵</div>
+                            <div class="cc-kpi-body">
+                                <p class="cc-kpi-label">Total Recaudado</p>
+                                <p id="kpi-total-collected" class="cc-kpi-value">$ 0</p>
+                            </div>
                         </div>
-                        <div class="bg-orange-50 border border-orange-200 p-4 rounded-xl shadow-xs">
-                            <p class="text-xs font-bold text-orange-800 uppercase">Clientes Morosos</p>
-                            <p id="kpi-debtors-count" class="text-2xl font-black text-orange-900 mt-1">0</p>
+                        <div class="cc-kpi-card" data-color="rose">
+                            <div class="cc-kpi-icon">⚠️</div>
+                            <div class="cc-kpi-body">
+                                <p class="cc-kpi-label">Saldo Pendiente</p>
+                                <p id="kpi-total-balance" class="cc-kpi-value">$ 0</p>
+                            </div>
                         </div>
-                        <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl shadow-xs">
-                            <p class="text-xs font-bold text-amber-800 uppercase">% de Garantía</p>
-                            <p id="kpi-warranty-percentage" class="text-2xl font-black text-amber-900 mt-1">0 %</p>
+                        <div class="cc-kpi-card" data-color="orange">
+                            <div class="cc-kpi-icon">🚨</div>
+                            <div class="cc-kpi-body">
+                                <p class="cc-kpi-label">Clientes Morosos</p>
+                                <p id="kpi-debtors-count" class="cc-kpi-value">0</p>
+                            </div>
+                        </div>
+                        <div class="cc-kpi-card" data-color="amber">
+                            <div class="cc-kpi-icon">🛡️</div>
+                            <div class="cc-kpi-body">
+                                <p class="cc-kpi-label">% de Garantía</p>
+                                <p id="kpi-warranty-percentage" class="cc-kpi-value">0 %</p>
+                            </div>
                         </div>
                     </div>
 
@@ -2945,7 +3044,8 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
                         <!-- Tendencia por Mes -->
                         <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col">
-                            <h3 class="font-bold text-slate-800 text-sm mb-3">📅 Tendencia de Servicios por Mes</h3>
+                            <h3 class="font-bold text-slate-800 text-sm mb-0.5">📅 Tendencia de Servicios por Mes</h3>
+                            <p class="text-[10px] text-slate-400 italic mb-2">Histórico completo — solo responde al filtro de Año, no a Mes/Fecha/Técnico/Servicio.</p>
                             <div class="relative flex-1 min-h-[250px]">
                                 <canvas id="chart-monthly-trend"></canvas>
                             </div>
@@ -2953,7 +3053,8 @@
 
                         <!-- Nueva Gráfica: Tendencia de Ingresos por Mes -->
                         <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col">
-                            <h3 class="font-bold text-slate-800 text-sm mb-3">💵 Tendencia de Ingresos por Mes</h3>
+                            <h3 class="font-bold text-slate-800 text-sm mb-0.5">💵 Tendencia de Ingresos por Mes</h3>
+                            <p class="text-[10px] text-slate-400 italic mb-2">Histórico completo — solo responde al filtro de Año, no a Mes/Fecha/Técnico/Servicio.</p>
                             <div class="relative flex-1 min-h-[250px]">
                                 <canvas id="chart-monthly-income-trend"></canvas>
                             </div>
@@ -3171,7 +3272,7 @@
                 }
 
                 const userData = userSnap.data();
-                const rol = userData.rol; // 'Soporte_TI', 'Administrativo', 'Tecnico'
+                const rol = userData.rol; // 'Soporte_TI', 'Administrativo', 'Tecnico', 'CEO'
 
                 // Actualizar elementos fijos en el encabezado superior
                 userEmailDisplay.textContent = user.email;
@@ -3237,6 +3338,20 @@
                         renderTrackingView();
                     }, 300);
                 }
+
+            } else if (rol === 'CEO') {
+                // Perfil 4: Solo ve el módulo de Dashboard (vista ejecutiva de KPIs)
+                importElements.forEach(el => el.style.display = 'none');
+                Object.keys(topNavButtons).forEach(key => {
+                    if (topNavButtons[key]) {
+                        if (key === 'dashboard') {
+                            topNavButtons[key].style.display = 'inline-block';
+                        } else {
+                            topNavButtons[key].style.display = 'none';
+                        }
+                    }
+                });
+                switchTab('dashboard');
             }
         }
 
@@ -3499,9 +3614,11 @@
         const dashFilterDate = document.getElementById('dash-filter-date');
         const dashFilterTech = document.getElementById('dash-filter-tech');
         const dashFilterService = document.getElementById('dash-filter-service');
+        const dashFilterYear = document.getElementById('dash-filter-year');
         const dashboardQuickFilters = document.querySelectorAll('[data-dashboard-quick-filter]');
 
         const kpiServicesCount = document.getElementById('kpi-services-count');
+        const kpiClientsCount = document.getElementById('kpi-clients-count');
         const kpiTotalFactured = document.getElementById('kpi-total-factured');
         const kpiTotalCollected = document.getElementById('kpi-total-collected');
         const kpiTotalBalance = document.getElementById('kpi-total-balance');
@@ -3663,6 +3780,7 @@
         dashFilterDate.addEventListener('change', () => { dashFilterMonth.value = ""; dashboardQuickFilter = ''; updateDashboardQuickFilterButtons(); renderDashboard(); });
         dashFilterTech.addEventListener('change', renderDashboard);
         dashFilterService.addEventListener('change', renderDashboard);
+        dashFilterYear.addEventListener('change', renderDashboard);
 
         function updateDashboardQuickFilterButtons() {
             dashboardQuickFilters.forEach(button => {
@@ -3723,6 +3841,7 @@
             dashFilterDate.value = "";
             dashFilterTech.value = "";
             dashFilterService.value = "";
+            dashFilterYear.value = "";
             dashboardQuickFilter = '';
             updateDashboardQuickFilterButtons();
             renderDashboard();
@@ -4790,6 +4909,7 @@
             let orders = [];
             snapshot.forEach(docSnap => orders.push({ id: docSnap.id, ...docSnap.data() }));
             cachedOrders = orders;
+            updateDashboardYearOptions(orders);
             renderOrders(orders, cachedClients);
             renderGantt();
             renderTrackingView();
@@ -4798,6 +4918,26 @@
             renderClients(cachedClients, cachedOrders);
             renderDashboard();
         });
+
+        function updateDashboardYearOptions(orders) {
+            const years = new Set();
+            orders.forEach(ord => {
+                if (ord.scheduleDate && ord.scheduleDate.length >= 4) years.add(ord.scheduleDate.substring(0, 4));
+                (ord.paymentsHistory || []).forEach(ph => {
+                    if (ph.date && ph.date.length >= 4) years.add(ph.date.substring(0, 4));
+                });
+            });
+            const sortedYears = Array.from(years).sort((a, b) => b.localeCompare(a));
+            const current = dashFilterYear.value;
+            dashFilterYear.innerHTML = `<option value="">Todos los Años</option>`;
+            sortedYears.forEach(y => {
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.textContent = y;
+                dashFilterYear.appendChild(opt);
+            });
+            if (sortedYears.includes(current)) dashFilterYear.value = current;
+        }
 
         orderForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -5060,8 +5200,6 @@
             let totalCollectedVal = 0;
             let totalWarrantyCount = 0;
 
-            const monthlyMap = {};
-            const monthlyIncomeMap = {};
             const dailyMap = {};
             const serviceTypeMap = {};
             const techProductivityMap = {};
@@ -5106,9 +5244,27 @@
                 }
 
                 const sDate = ord.scheduleDate || getColombiaCurrentDateString();
-                const monthKey = sDate.substring(0, 7);
-                monthlyMap[monthKey] = (monthlyMap[monthKey] || 0) + qty;
                 dailyMap[sDate] = (dailyMap[sDate] || 0) + qty;
+            });
+
+            // ================= Gráficas de TENDENCIA MENSUAL =================
+            // Estas dos gráficas ("Tendencia de Servicios por Mes" y "Tendencia
+            // de Ingresos por Mes") son un histórico y NO deben verse afectadas
+            // por los filtros de Mes/Fecha/Técnico/Servicio del Dashboard — solo
+            // responden al filtro de Año (o muestran todo el histórico si no se
+            // elige ningún año).
+            const valYear = dashFilterYear.value;
+            const monthlyMap = {};
+            const monthlyIncomeMap = {};
+
+            cachedOrders.forEach(ord => {
+                const qty = parseInt(ord.serviceQuantity) || 1;
+                const sDate = ord.scheduleDate || getColombiaCurrentDateString();
+                const monthKey = sDate.substring(0, 7);
+
+                if (!valYear || monthKey.startsWith(valYear)) {
+                    monthlyMap[monthKey] = (monthlyMap[monthKey] || 0) + qty;
+                }
 
                 // Ingresos por mes: se agrupan por la fecha real en que se
                 // recibió cada abono (no por la fecha de agendamiento de la
@@ -5117,10 +5273,15 @@
                     ord.paymentsHistory.forEach(ph => {
                         const payDate = ph.date || sDate;
                         const payMonthKey = payDate.substring(0, 7);
-                        monthlyIncomeMap[payMonthKey] = (monthlyIncomeMap[payMonthKey] || 0) + (parseFloat(ph.amount) || 0);
+                        if (!valYear || payMonthKey.startsWith(valYear)) {
+                            monthlyIncomeMap[payMonthKey] = (monthlyIncomeMap[payMonthKey] || 0) + (parseFloat(ph.amount) || 0);
+                        }
                     });
-                } else if (collected > 0) {
-                    monthlyIncomeMap[monthKey] = (monthlyIncomeMap[monthKey] || 0) + collected;
+                } else {
+                    const collected = parseFloat(ord.paidAmount) || 0;
+                    if (collected > 0 && (!valYear || monthKey.startsWith(valYear))) {
+                        monthlyIncomeMap[monthKey] = (monthlyIncomeMap[monthKey] || 0) + collected;
+                    }
                 }
             });
 
@@ -5128,6 +5289,7 @@
             const warrantyPercentage = totalServicesCount > 0 ? ((totalWarrantyCount / totalServicesCount) * 100).toFixed(1) : 0;
 
             kpiServicesCount.textContent = totalServicesCount.toLocaleString('es-CO');
+            kpiClientsCount.textContent = cachedClients.length.toLocaleString('es-CO');
             kpiTotalFactured.textContent = `$ ${totalFacturedVal.toLocaleString('es-CO')}`;
             kpiTotalCollected.textContent = `$ ${totalCollectedVal.toLocaleString('es-CO')}`;
             kpiTotalBalance.textContent = `$ ${totalBalanceVal.toLocaleString('es-CO')}`;
