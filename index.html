@@ -2951,6 +2951,14 @@
                             </div>
                         </div>
 
+                        <!-- Nueva Gráfica: Tendencia de Ingresos por Mes -->
+                        <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col">
+                            <h3 class="font-bold text-slate-800 text-sm mb-3">💵 Tendencia de Ingresos por Mes</h3>
+                            <div class="relative flex-1 min-h-[250px]">
+                                <canvas id="chart-monthly-income-trend"></canvas>
+                            </div>
+                        </div>
+
                         <!-- Tendencia por Día -->
                         <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col">
                             <h3 class="font-bold text-slate-800 text-sm mb-3">📆 Tendencia de Servicios por Día</h3>
@@ -3046,7 +3054,7 @@
     <!-- Modal para Editar Orden Financiera / CRM (Total Facturado y Abonos) -->
     <div id="edit-financial-modal" role="dialog" aria-modal="true" aria-labelledby="edit-financial-modal-title" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <h3 id="edit-financial-modal-title" class="text-lg font-bold text-slate-800">✏️ Editar Facturación y Abonos de Orden</h3>
+            <h3 id="edit-financial-modal-title" class="text-lg font-bold text-slate-800">✏️ Editar Valor Facturado de la Orden</h3>
             <p id="edit-modal-order-code-label" class="text-xs font-mono font-bold text-sky-700"></p>
             <input type="hidden" id="edit-modal-order-id" />
 
@@ -3056,13 +3064,16 @@
             </div>
 
             <div class="border-t pt-3 space-y-2">
-                <label class="block text-xs font-bold text-slate-700 uppercase">Historial de Abonos Registrados:</label>
-                <div id="edit-modal-payments-container" class="space-y-2 max-h-48 overflow-y-auto pr-1">
-                    <!-- Se inyectan dinámicamente los abonos -->
+                <div class="flex items-center justify-between">
+                    <label class="block text-xs font-bold text-slate-700 uppercase">Historial de Abonos Registrados:</label>
+                    <span id="edit-modal-paid-summary" class="text-xs font-bold text-sky-700"></span>
                 </div>
-                <button type="button" onclick="window.addPaymentRowInEditModal()" class="mt-2 bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold px-3 py-1.5 rounded-lg text-xs transition">
-                    ➕ Agregar Nuevo Abono
-                </button>
+                <p class="text-[11px] text-slate-500 italic">
+                    🔒 Los abonos son de solo lectura aquí. Se actualizan automáticamente cuando se registra un pago en el módulo <b>Financiero</b> (o desde cualquier otro movimiento del sistema que aplique un abono).
+                </p>
+                <div id="edit-modal-payments-container" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                    <!-- Se inyectan dinámicamente los abonos (solo lectura) -->
+                </div>
             </div>
 
             <div class="flex justify-end gap-2 pt-3 border-t">
@@ -3247,26 +3258,6 @@
                     buttonText: '➕ Nueva Orden',
                     icon: '📋',
                     description: 'Registra y asigna una nueva orden de servicio.'
-                },
-                {
-                    sectionId: 'section-crm',
-                    formId: 'client-form',
-                    modalId: 'client-entry-modal',
-                    titleId: 'client-entry-modal-title',
-                    buttonId: 'open-client-entry-btn',
-                    buttonText: '➕ Nuevo Cliente',
-                    icon: '📇',
-                    description: 'Registra un nuevo cliente en el CRM.'
-                },
-                {
-                    sectionId: 'section-technicians',
-                    formId: 'tech-form',
-                    modalId: 'tech-entry-modal',
-                    titleId: 'tech-entry-modal-title',
-                    buttonId: 'open-tech-entry-btn',
-                    buttonText: '➕ Nuevo Colaborador',
-                    icon: '👷‍♂️',
-                    description: 'Registra un nuevo colaborador en Nómina.'
                 }
             ];
 
@@ -3491,8 +3482,6 @@
         })();
 
         const orderEntryModalEl = document.getElementById('order-entry-modal');
-        const clientEntryModalEl = document.getElementById('client-entry-modal');
-        const techEntryModalEl = document.getElementById('tech-entry-modal');
 
         const ordersTableBody = document.getElementById('orders-table-body');
         const clientsTableBody = document.getElementById('clients-table-body');
@@ -3521,6 +3510,7 @@
         const dashTechProductivityBody = document.getElementById('dash-tech-productivity-body');
 
         let chartMonthlyInstance = null;
+        let chartMonthlyIncomeInstance = null;
         let chartDailyInstance = null;
         let chartPieInstance = null;
         let chartSeniorityInstance = null;
@@ -4419,12 +4409,10 @@
             clientAddressInput.value = client.address;
             clientDateInput.value = client.creationDate || getColombiaCurrentDateString();
             clientFormTitle.textContent = "Editar Cliente";
-            const clientModalTitle = document.getElementById('client-entry-modal-title');
-            if (clientModalTitle) clientModalTitle.textContent = "Editar Cliente";
             submitClientBtn.textContent = "Actualizar Cliente";
             submitClientBtn.className = "flex-1 bg-amber-600 text-white font-semibold py-3 rounded-lg hover:bg-amber-700 transition shadow-md";
             cancelEditBtn.classList.remove('hidden');
-            window.openEntryModal('client-entry-modal');
+            clientForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
         };
 
         window.resetClientForm = () => {
@@ -4432,11 +4420,9 @@
             clientIdInput.value = "";
             clientDateInput.value = getColombiaCurrentDateString();
             clientFormTitle.textContent = "Registro de Nuevo Cliente";
-            document.getElementById('client-entry-modal-title').textContent = "Nuevo Cliente";
             submitClientBtn.textContent = "Guardar Cliente en CRM";
             submitClientBtn.className = "flex-1 bg-emerald-600 text-white font-semibold py-3 rounded-lg hover:bg-emerald-700 transition shadow-md";
             cancelEditBtn.classList.add('hidden');
-            window.closeEntryModal('client-entry-modal');
         };
 
         function getFilteredClients(clients, orders) {
@@ -4497,7 +4483,7 @@
                                     <span class="font-bold text-sky-700">${escapeHtml(o.orderCode || 'N/A')} (📅 ${escapeHtml(o.scheduleDate || 'N/A')})</span>
                                     <div class="flex items-center gap-2">
                                         <span class="text-emerald-700 font-bold">Facturado: $ ${total.toLocaleString('es-CO')}</span>
-                                        <button onclick="window.openEditFinancialModal('${o.id}')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded transition" title="Editar Total y Abonos">✏️ Editar</button>
+                                        <button onclick="window.openEditFinancialModal('${o.id}')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded transition" title="Editar Valor Facturado">✏️ Editar</button>
                                     </div>
                                 </div>
                                 <div class="text-xs flex justify-between">
@@ -4624,23 +4610,19 @@
             techEmergencyContactInput.value = tech.emergencyContact || '';
             techEmergencyPhoneInput.value = tech.emergencyPhone || '';
             techFormTitle.textContent = "Editar Colaborador";
-            const techModalTitle = document.getElementById('tech-entry-modal-title');
-            if (techModalTitle) techModalTitle.textContent = "Editar Colaborador";
             submitTechBtn.textContent = "Actualizar Colaborador";
             submitTechBtn.className = "flex-1 bg-amber-600 text-white font-semibold py-3 rounded-lg hover:bg-amber-700 transition shadow-md";
             cancelTechEditBtn.classList.remove('hidden');
-            window.openEntryModal('tech-entry-modal');
+            techForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
         };
 
         window.resetTechForm = () => {
             techForm.reset();
             techIdInput.value = "";
             techFormTitle.textContent = "Registro de Nuevo Colaborador";
-            document.getElementById('tech-entry-modal-title').textContent = "Nuevo Colaborador";
             submitTechBtn.textContent = "Guardar Colaborador";
             submitTechBtn.className = "flex-1 bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 transition shadow-md";
             cancelTechEditBtn.classList.add('hidden');
-            window.closeEntryModal('tech-entry-modal');
         };
 
         function getFilteredTechnicians(techs) {
@@ -4763,30 +4745,35 @@
             const currentDashTech = dashFilterTech.value;
             dashFilterTech.innerHTML = `<option value="">Todos los Técnicos</option>`;
 
-            // En el módulo de Órdenes, los campos "Técnico Asignado" y "Técnico
-            // Auxiliar" solo deben ofrecer colaboradores cuyo Cargo (Nómina) sea
-            // exactamente "Técnico" (se excluyen Administrador, CEO, Soporte TI, etc.).
-            const onlyFieldTechs = techs.filter(tech => tech.position === 'Técnico');
+            // En TODOS los módulos que muestran nombres de técnicos (Órdenes,
+            // Seguimiento, Filtros y Gantt) solo se ofrecen colaboradores cuyo
+            // Cargo (Nómina) sea exactamente "Técnico" Y que además estén
+            // "Activo" (se excluyen Administrador, CEO, Soporte TI, Suspendidos
+            // e Inactivos).
+            const activeFieldTechs = techs.filter(tech => tech.position === 'Técnico' && (tech.status || 'Activo') === 'Activo');
 
-            onlyFieldTechs.forEach(tech => {
+            activeFieldTechs.forEach(tech => {
                 const opt = document.createElement('option');
                 opt.value = tech.name;
                 opt.textContent = tech.name;
                 orderTechSelect.appendChild(opt.cloneNode(true));
                 orderTechAuxSelect.appendChild(opt.cloneNode(true));
-            });
-
-            // El resto de los módulos (Seguimiento, Filtros, Gantt, Dashboard)
-            // conservan la lista completa de colaboradores, sin este filtro.
-            techs.forEach(tech => {
-                const opt = document.createElement('option');
-                opt.value = tech.name;
-                opt.textContent = tech.name;
                 trackingTechSelect.appendChild(opt.cloneNode(true));
                 filterTechnician.appendChild(opt.cloneNode(true));
                 ganttFilterTech.appendChild(opt.cloneNode(true));
-                dashFilterTech.appendChild(opt.cloneNode(true));
             });
+
+            // Excepción: el Dashboard sí debe poder mostrar técnicos activos e
+            // inactivos (para poder analizar productividad histórica), pero
+            // siempre limitado al Cargo "Técnico".
+            const allFieldTechs = techs.filter(tech => tech.position === 'Técnico');
+            allFieldTechs.forEach(tech => {
+                const opt = document.createElement('option');
+                opt.value = tech.name;
+                opt.textContent = (tech.status || 'Activo') === 'Activo' ? tech.name : `${tech.name} (${tech.status})`;
+                dashFilterTech.appendChild(opt);
+            });
+
             orderTechAuxSelect.value = currentOrderTechAux;
             filterTechnician.value = currentFilterTech;
             ganttFilterTech.value = currentGanttTech;
@@ -5018,7 +5005,7 @@
                     <td class="p-4 text-slate-600 text-xs font-mono font-semibold">⏰ ${escapeHtml(order.scheduleTime || '08:00')}</td>
                     <td class="p-4 text-xs">
                         <span class="text-emerald-700 font-bold">$ ${totalVal.toLocaleString('es-CO')}</span>
-                        <button onclick="window.openEditFinancialModal('${order.id}')" class="block mt-1 bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded transition w-max" title="Editar Total y Abonos">✏️ Editar</button>
+                        <button onclick="window.openEditFinancialModal('${order.id}')" class="block mt-1 bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded transition w-max" title="Editar Valor Facturado">✏️ Editar</button>
                     </td>
                     <td class="p-4 text-xs font-semibold text-sky-800">
                         $ ${firstAbonoAmount.toLocaleString('es-CO')}
@@ -5074,6 +5061,7 @@
             let totalWarrantyCount = 0;
 
             const monthlyMap = {};
+            const monthlyIncomeMap = {};
             const dailyMap = {};
             const serviceTypeMap = {};
             const techProductivityMap = {};
@@ -5121,6 +5109,19 @@
                 const monthKey = sDate.substring(0, 7);
                 monthlyMap[monthKey] = (monthlyMap[monthKey] || 0) + qty;
                 dailyMap[sDate] = (dailyMap[sDate] || 0) + qty;
+
+                // Ingresos por mes: se agrupan por la fecha real en que se
+                // recibió cada abono (no por la fecha de agendamiento de la
+                // orden), para reflejar con precisión cuándo entró el dinero.
+                if (ord.paymentsHistory && ord.paymentsHistory.length > 0) {
+                    ord.paymentsHistory.forEach(ph => {
+                        const payDate = ph.date || sDate;
+                        const payMonthKey = payDate.substring(0, 7);
+                        monthlyIncomeMap[payMonthKey] = (monthlyIncomeMap[payMonthKey] || 0) + (parseFloat(ph.amount) || 0);
+                    });
+                } else if (collected > 0) {
+                    monthlyIncomeMap[monthKey] = (monthlyIncomeMap[monthKey] || 0) + collected;
+                }
             });
 
             const totalBalanceVal = totalFacturedVal - totalCollectedVal;
@@ -5159,6 +5160,7 @@
             }
 
             renderMonthlyChart(monthlyMap);
+            renderMonthlyIncomeChart(monthlyIncomeMap);
             renderDailyChart(dailyMap);
             renderServicePieChart(serviceTypeMap);
             renderTechIncomeChart(filteredOrders);
@@ -5191,6 +5193,51 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            });
+        }
+
+        function renderMonthlyIncomeChart(monthlyIncomeMap) {
+            const sortedMonths = Object.keys(monthlyIncomeMap).sort();
+            const dataValues = sortedMonths.map(m => monthlyIncomeMap[m]);
+
+            const ctx = document.getElementById('chart-monthly-income-trend').getContext('2d');
+            if (chartMonthlyIncomeInstance) chartMonthlyIncomeInstance.destroy();
+
+            chartMonthlyIncomeInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: sortedMonths,
+                    datasets: [{
+                        label: 'Ingresos por Mes',
+                        data: dataValues,
+                        borderColor: '#059669',
+                        backgroundColor: 'rgba(5, 150, 105, 0.12)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#059669'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: context => `$ ${Number(context.raw || 0).toLocaleString('es-CO')}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => `$ ${Number(value).toLocaleString('es-CO')}`
+                            }
+                        }
+                    }
                 }
             });
         }
@@ -5437,7 +5484,7 @@
                                 <span class="font-bold text-sky-700">${o.orderCode} (${o.scheduleDate})</span>
                                 <div class="flex items-center gap-2">
                                     <span class="text-emerald-700 font-bold">Facturado: $ ${o.total.toLocaleString('es-CO')}</span>
-                                    <button onclick="window.openEditFinancialModal('${o.id}')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded transition" title="Editar Total y Abonos">✏️ Editar</button>
+                                    <button onclick="window.openEditFinancialModal('${o.id}')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded transition" title="Editar Valor Facturado">✏️ Editar</button>
                                 </div>
                             </div>
                             <div class="text-xs flex justify-between">
@@ -5778,6 +5825,12 @@
             editModalOrderCodeLabel.textContent = `Orden: ${order.orderCode || 'N/A'} - Cliente: ${order.clientName}`;
             editModalTotal.value = order.totalFactured || 0;
 
+            const paidSummaryEl = document.getElementById('edit-modal-paid-summary');
+            if (paidSummaryEl) {
+                const paid = parseFloat(order.paidAmount) || 0;
+                paidSummaryEl.textContent = `Abonado: $ ${paid.toLocaleString('es-CO')}`;
+            }
+
             renderEditModalPayments(order.paymentsHistory || []);
             editFinancialModal.classList.remove('hidden');
         };
@@ -5793,58 +5846,17 @@
                 return;
             }
 
-            history.forEach((ph, index) => {
+            history.forEach((ph) => {
                 const row = document.createElement('div');
-                row.className = "flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-200 text-xs";
+                row.className = "flex items-center justify-between gap-2 bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-xs";
                 row.innerHTML = `
-                    <div class="flex-1 space-y-0.5">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase">Valor ($):</label>
-                        <input type="number" data-pay-index="${index}" class="edit-pay-amount w-full border p-1 rounded font-bold text-emerald-700" value="${ph.amount}" min="0" step="100" />
-                    </div>
-                    <div class="flex-1 space-y-0.5">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase">Método:</label>
-                        <select data-pay-index="${index}" class="edit-pay-method w-full border p-1 rounded bg-white font-semibold">
-                            <option value="Efectivo" ${ph.method === 'Efectivo' ? 'selected' : ''}>Efectivo</option>
-                            <option value="Nequi" ${ph.method === 'Nequi' ? 'selected' : ''}>Nequi</option>
-                            <option value="Daviplata" ${ph.method === 'Daviplata' ? 'selected' : ''}>Daviplata</option>
-                            <option value="Transferencia Bancaria" ${ph.method === 'Transferencia Bancaria' ? 'selected' : ''}>Transferencia</option>
-                        </select>
-                    </div>
-                    <div class="flex-1 space-y-0.5">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase">Fecha:</label>
-                        <input type="date" data-pay-index="${index}" class="edit-pay-date w-full border p-1 rounded" value="${ph.date || getColombiaCurrentDateString()}" />
-                    </div>
-                    <div class="pt-4">
-                        <button type="button" onclick="window.removePaymentRowInEditModal(${index})" class="text-rose-500 hover:text-rose-700 font-bold px-2 py-1 rounded" title="Eliminar abono">🗑️</button>
-                    </div>
+                    <span class="font-bold text-emerald-700">$ ${(parseFloat(ph.amount) || 0).toLocaleString('es-CO')}</span>
+                    <span class="font-semibold text-slate-600">${escapeHtml(ph.method || 'N/A')}</span>
+                    <span class="text-slate-500">📅 ${escapeHtml(ph.date || 'N/A')}</span>
                 `;
                 editModalPaymentsContainer.appendChild(row);
             });
         }
-
-        window.addPaymentRowInEditModal = () => {
-            const orderId = editModalOrderId.value;
-            const order = cachedOrders.find(o => o.id === orderId);
-            if (!order) return;
-
-            const currentHistory = order.paymentsHistory || [];
-            currentHistory.push({
-                amount: 0,
-                method: 'Efectivo',
-                date: getColombiaCurrentDateString()
-            });
-            renderEditModalPayments(currentHistory);
-        };
-
-        window.removePaymentRowInEditModal = (index) => {
-            const orderId = editModalOrderId.value;
-            const order = cachedOrders.find(o => o.id === orderId);
-            if (!order) return;
-
-            const currentHistory = order.paymentsHistory || [];
-            currentHistory.splice(index, 1);
-            renderEditModalPayments(currentHistory);
-        };
 
         window.saveEditFinancialModal = async () => {
             const orderId = editModalOrderId.value;
@@ -5853,36 +5865,21 @@
 
             const newTotal = parseFloat(editModalTotal.value) || 0;
 
-            const amountInputs = editModalPaymentsContainer.querySelectorAll('.edit-pay-amount');
-            const methodSelects = editModalPaymentsContainer.querySelectorAll('.edit-pay-method');
-            const dateInputs = editModalPaymentsContainer.querySelectorAll('.edit-pay-date');
-
-            let newHistory = [];
-            let totalPaid = 0;
-
-            for (let i = 0; i < amountInputs.length; i++) {
-                const amount = parseFloat(amountInputs[i].value) || 0;
-                const method = methodSelects[i].value;
-                const date = dateInputs[i].value || getColombiaCurrentDateString();
-
-                if (amount > 0) {
-                    newHistory.push({ amount, method, date });
-                    totalPaid += amount;
-                }
-            }
-
             try {
+                // Solo se actualiza el valor total facturado. El abono (paidAmount)
+                // y su historial (paymentsHistory) NO se tocan desde aquí: se
+                // mantienen sincronizados únicamente con los movimientos que se
+                // registran en el módulo Financiero (o cualquier otro módulo que
+                // aplique un pago), evitando que se puedan descuadrar manualmente.
                 await updateDoc(doc(db, "services", orderId), {
-                    totalFactured: newTotal,
-                    paidAmount: totalPaid,
-                    paymentsHistory: newHistory
+                    totalFactured: newTotal
                 });
 
-                alert("¡Facturación y abonos actualizados exitosamente!");
+                alert("¡Valor facturado actualizado exitosamente!");
                 closeEditFinancialModal();
             } catch (err) {
                 console.error(err);
-                alert("Error al actualizar la información financiera.");
+                alert("Error al actualizar el valor facturado.");
             }
         };
 
